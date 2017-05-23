@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Фамилия:
+  = @worker.sn
+%p
+  %b Имя:
+  = @worker.fn
+%p
+  %b Отчество:
+  = @worker.ln
+%p
+  %b Серия и номер паспорта:
+  = @worker.passport
+%p
+  %b ИНН:
+  = @worker.inn
+%p
+  %b День рождения:
+  = @worker.birthday
+%p
+  %b Должность:
+  = @worker.position
+%p
+  %b Отдел:
+  = @worker.department.nil? ? "" : @worker.department.name
+
+= link_to 'Edit', edit_worker_path(@worker)
+\|
+= link_to 'Back', workers_path

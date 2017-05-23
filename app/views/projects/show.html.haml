@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Название:
+  = @project.name
+%p
+  %b Дата начала:
+  = @project.start
+%p
+  %b Дата окончания:
+  = @project.end
+%p
+  %b Цена:
+  = @project.price
+
+= link_to 'Edit', edit_project_path(@project)
+\|
+= link_to 'Back', projects_path

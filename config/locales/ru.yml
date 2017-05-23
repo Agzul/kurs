@@ -1,0 +1,92 @@
+ru:
+  app:
+    name: Базовое приложение
+    company:
+      short_name: МПУ
+      department: Кафедра
+  helpers:
+    submit:
+      create: Сохранить
+      submit: Сохранить
+      update: Сохранить
+  buttons:
+    edit: Редактировать
+    destroy: Удалить
+    show: Показать
+    confirm:
+      user: Действительно удалить пользователя?
+      role: Действительно удалить роль?
+      worker: Действительно удалить сотрудника?
+      project: Действительно удалить проект?
+      department: Действительно удалить отдел?
+    new:
+      user: Новый пользователь
+      role: Новая роль
+      worker: Новый сотрудник
+      project: Новый проект
+      department: Новый отдел
+  headers:
+    users:
+      edit: Редактирование пользователя
+      new: Новый пользователь
+      index: Список пользователей
+    roles:
+      index: Список возможных ролей пользователей
+      edit: Редактирование роли
+      new: Новая роль
+    workers:
+      index: Список сотрудников
+      edit: Редактирование сотрудника
+      new: Новый сотрудник
+    projects:
+      index: Список проектов
+      edit: Редактирование проектов
+      new: Новый проект
+    departments:
+      index: Список отделов
+      edit: Редактирование отделов
+      new: Новый отдел
+  views:
+    pagination:
+      first: ⇤
+      last: ⇥
+      previous: ←
+      next: →
+      truncate: …
+  activerecord:
+    models:
+      user: Пользователь
+      role: Роль
+      worker: Сотрудник
+      project: Проект
+      department: Отдел
+    attributes:
+      user:
+        email: Пользовательское имя/электронная почта
+        birthday: Дата рождения
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+        reset_password_email_sent_at: Дата отправления письма для смены пароля
+        activation_state: Статус активации
+        activation_token_expires_at: Дата прекращения действия токена активации
+        last_login_at: Время последнего входа в систему
+        role_users: Роли
+      role:
+        name: Обозначение
+        info: Краткое название
+        full_info: Описание
+      worker:
+        sn: Фамилия
+        fn: Имя
+        ln: Отчество
+        passport: Серия и номер паспорта
+        inn: ИНН
+        birthday: День рождения
+        position: Должность
+      project:
+        name: Название
+        start: Дата начала
+        end: Дата окончания
+        price: Цена
+      department:
+        name: Название

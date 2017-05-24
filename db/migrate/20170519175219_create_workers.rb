@@ -4,8 +4,8 @@ class CreateWorkers < ActiveRecord::Migration
       t.string :sn,       null: false
       t.string :fn,       null: false
       t.string :ln,       null: false
-      t.string :passport, null: false
-      t.string :inn,      null: false
+      t.string :passport, null: false, index: { unique: true}
+      t.string :inn,      null: false, index: { unique: true}
       t.date :birthday,   null: false
       t.string :position, null: false
       t.references :department, index: true, foreign_key: true

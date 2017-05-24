@@ -11444,3 +11444,2019 @@ Processing by WorkersController#new as HTML
   Rendered application/_flash_messages.html.haml (0.1ms)
   [1m[35mSQL (37.0ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-05-23 20:55:05.357133' WHERE "users"."id" = $1  [["id", 1]]
 Completed 200 OK in 163ms (Views: 117.2ms | ActiveRecord: 38.5ms)
+  [1m[36m (75.3ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (86.8ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVersions (20151203152020)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (111.0ms)[0m  [1mCREATE TABLE "versions" ("id" serial primary key, "item_type" character varying NOT NULL, "item_id" integer NOT NULL, "event" character varying NOT NULL, "whodunnit" character varying, "object" text, "created_at" timestamp) [0m
+  [1m[35m (40.4ms)[0m  CREATE  INDEX  "index_versions_on_item_type_and_item_id" ON "versions"  ("item_type", "item_id")
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151203152020"]]
+  [1m[35m (22.9ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20151203154714)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (96.3ms)[0m  CREATE TABLE "delayed_jobs" ("id" serial primary key, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" timestamp, "locked_at" timestamp, "failed_at" timestamp, "locked_by" character varying, "queue" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (39.6ms)[0m  [1mCREATE  INDEX  "delayed_jobs_priority" ON "delayed_jobs"  ("priority", "run_at")[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151203154714"]]
+  [1m[36m (25.5ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryCore (20151204090515)
+  [1m[35m (0.5ms)[0m  BEGIN
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/oag2/Ruby on Rails/kurs-master/db/migrate/20151204090515_sorcery_core.rb:8)
+  [1m[36m (89.7ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "email" character varying NOT NULL, "crypted_password" character varying, "salt" character varying, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (40.0ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090515"]]
+  [1m[35m (13.3ms)[0m  COMMIT
+Migrating to SorceryRememberMe (20151204090516)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "users" ADD "remember_me_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "remember_me_token_expires_at" timestamp[0m
+  [1m[35m (39.6ms)[0m  CREATE  INDEX  "index_users_on_remember_me_token" ON "users"  ("remember_me_token")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090516"]]
+  [1m[35m (24.6ms)[0m  COMMIT
+Migrating to SorceryResetPassword (20151204090517)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.9ms)[0m  ALTER TABLE "users" ADD "reset_password_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "reset_password_token_expires_at" timestamp[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "users" ADD "reset_password_email_sent_at" timestamp
+  [1m[36m (49.7ms)[0m  [1mCREATE  INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090517"]]
+  [1m[36m (13.0ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryUserActivation (20151204090518)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.8ms)[0m  [1mALTER TABLE "users" ADD "activation_state" character varying[0m
+  [1m[35m (0.9ms)[0m  ALTER TABLE "users" ADD "activation_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "activation_token_expires_at" timestamp[0m
+  [1m[35m (50.5ms)[0m  CREATE  INDEX  "index_users_on_activation_token" ON "users"  ("activation_token")
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090518"]]
+  [1m[35m (11.8ms)[0m  COMMIT
+Migrating to SorceryBruteForceProtection (20151204090519)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (284.0ms)[0m  ALTER TABLE "users" ADD "failed_logins_count" integer DEFAULT 0
+  [1m[36m (0.8ms)[0m  [1mALTER TABLE "users" ADD "lock_expires_at" timestamp[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "unlock_token" character varying
+  [1m[36m (47.7ms)[0m  [1mCREATE  INDEX  "index_users_on_unlock_token" ON "users"  ("unlock_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090519"]]
+  [1m[36m (11.3ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryActivityLogging (20151204090520)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "last_login_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "last_logout_at" timestamp
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "last_activity_at" timestamp[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "last_login_from_ip_address" character varying
+  [1m[36m (52.5ms)[0m  [1mCREATE  INDEX  "index_users_on_last_logout_at_and_last_activity_at" ON "users"  ("last_logout_at", "last_activity_at")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090520"]]
+  [1m[36m (20.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoles (20170409204945)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (95.7ms)[0m  [1mCREATE TABLE "roles" ("id" serial primary key, "name" character varying NOT NULL, "info" character varying NOT NULL, "full_info" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (40.0ms)[0m  CREATE UNIQUE INDEX  "index_roles_on_name" ON "roles"  ("name")
+  [1m[36m (40.3ms)[0m  [1mCREATE UNIQUE INDEX  "index_roles_on_info" ON "roles"  ("info")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409204945"]]
+  [1m[36m (30.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoleUsers (20170409205031)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (98.3ms)[0m  [1mCREATE TABLE "role_users" ("id" serial primary key, "role_id" integer NOT NULL, "user_id" integer NOT NULL, "data" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (39.8ms)[0m  CREATE  INDEX  "index_role_users_on_role_id" ON "role_users"  ("role_id")
+  [1m[36m (51.3ms)[0m  [1mCREATE  INDEX  "index_role_users_on_user_id" ON "role_users"  ("user_id")[0m
+  [1m[35m (3.9ms)[0m  ALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d517f3214f"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+
+  [1m[36m (3.1ms)[0m  [1mALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d225876829"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409205031"]]
+  [1m[36m (8.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddBirthdayToUser (20170501085108)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "birthday" date[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170501085108"]]
+  [1m[36m (5.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDepartments (20170519175107)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (100.6ms)[0m  [1mCREATE TABLE "departments" ("id" serial primary key, "name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175107"]]
+  [1m[36m (15.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkers (20170519175219)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (122.3ms)[0m  [1mCREATE TABLE "workers" ("id" serial primary key, "sn" character varying NOT NULL, "fn" character varying NOT NULL, "ln" character varying NOT NULL, "passport" character varying NOT NULL, "inn" character varying NOT NULL, "birthday" date NOT NULL, "position" character varying NOT NULL, "department_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (40.6ms)[0m  CREATE UNIQUE INDEX  "index_workers_on_passport" ON "workers"  ("passport")
+  [1m[36m (51.3ms)[0m  [1mCREATE UNIQUE INDEX  "index_workers_on_inn" ON "workers"  ("inn")[0m
+  [1m[35m (40.1ms)[0m  CREATE  INDEX  "index_workers_on_department_id" ON "workers"  ("department_id")
+  [1m[36m (3.0ms)[0m  [1mALTER TABLE "workers" ADD CONSTRAINT "fk_rails_a707a1612d"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175219"]]
+  [1m[36m (31.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateProjects (20170519175231)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (90.1ms)[0m  [1mCREATE TABLE "projects" ("id" serial primary key, "name" character varying NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "price" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175231"]]
+  [1m[36m (24.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkerProjects (20170519175250)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (58.6ms)[0m  [1mCREATE TABLE "worker_projects" ("id" serial primary key, "worker_id" integer NOT NULL, "project_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (72.9ms)[0m  CREATE  INDEX  "index_worker_projects_on_worker_id" ON "worker_projects"  ("worker_id")
+  [1m[36m (40.3ms)[0m  [1mCREATE  INDEX  "index_worker_projects_on_project_id" ON "worker_projects"  ("project_id")[0m
+  [1m[35m (2.4ms)[0m  ALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_7c9f8f33e0"
+FOREIGN KEY ("worker_id")
+  REFERENCES "workers" ("id")
+
+  [1m[36m (2.1ms)[0m  [1mALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_c5fb282d59"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175250"]]
+  [1m[36m (17.1ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (4.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'delayed_jobs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.4ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'departments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.6ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.8ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'role_users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.6ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.4ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'versions'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.5ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'worker_projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.8ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'workers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mUser Load (1.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "admin@localhost"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Exists (1.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@localhost') LIMIT 1[0m
+  [1m[35mSQL (1.4ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "admin@localhost"], ["salt", "xhz67zyEPbxHDDXDgp45"], ["crypted_password", "$2a$10$o0wpMDDbrcNgxGS9wiEMy.dpyYx6ltJXH3K6jhr9KnAEoJO9R4Hja"], ["created_at", "2017-05-24 12:37:40.884681"], ["updated_at", "2017-05-24 12:37:40.884681"], ["activation_token", "FSxrEMEFPsM7ht_U1zA6"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (9.4ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (4.4ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 432.2ms
+
+Sent mail to admin@localhost (14.6ms)
+Date: Wed, 24 May 2017 15:37:41 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257e9553d01_9992af7728c596c41391@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257e9551484_9992af7728c596c412e8";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257e9551484_9992af7728c596c412e8
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/FSxrEMEFPsM7ht_U1zA6/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257e9551484_9992af7728c596c412e8
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/FSxrEMEFPsM7ht_U1zA6/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257e9551484_9992af7728c596c412e8--
+
+  [1m[36m (17.7ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (5.8ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (4.7ms)
+
+UserMailer#activation_success_email: processed outbound mail in 31.3ms
+
+Sent mail to admin@localhost (8.9ms)
+Date: Wed, 24 May 2017 15:37:41 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257e95632ef_9992af7728c596c4156a@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257e9561a4e_9992af7728c596c414ec";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257e9561a4e_9992af7728c596c414ec
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257e9561a4e_9992af7728c596c414ec
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257e9561a4e_9992af7728c596c414ec--
+
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:37:41.414060"], ["id", 1]]
+  [1m[35m (8.0ms)[0m  COMMIT
+  [1m[36mUser Load (0.7ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "user@localhost"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (1.0ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('user@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "user@localhost"], ["salt", "PhRPJyAGKz2hf5n8m3oB"], ["crypted_password", "$2a$10$mONyf9SfJ9vzuLuocJGWOOY0JuKBw4HCeTJxr.tGW09OSxIrkSc4q"], ["created_at", "2017-05-24 12:37:41.638069"], ["updated_at", "2017-05-24 12:37:41.638069"], ["activation_token", "snyABo73xYcTpg5wxLkh"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 13.3ms
+
+Sent mail to user@localhost (7.4ms)
+Date: Wed, 24 May 2017 15:37:41 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257e95a03c6_9992af7728c596c41771@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257e959f0f5_9992af7728c596c41633";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257e959f0f5_9992af7728c596c41633
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/snyABo73xYcTpg5wxLkh/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257e959f0f5_9992af7728c596c41633
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/snyABo73xYcTpg5wxLkh/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257e959f0f5_9992af7728c596c41633--
+
+  [1m[36m (7.3ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (0.3ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_success_email: processed outbound mail in 16.1ms
+
+Sent mail to user@localhost (6.4ms)
+Date: Wed, 24 May 2017 15:37:41 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257e95a8668_9992af7728c596c41983@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257e95a755b_9992af7728c596c418f3";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257e95a755b_9992af7728c596c418f3
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257e95a755b_9992af7728c596c418f3
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257e95a755b_9992af7728c596c418f3--
+
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:37:41.695800"], ["id", 2]]
+  [1m[35m (5.2ms)[0m  COMMIT
+  [1m[36mRole Load (0.4ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mRole Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'admin' LIMIT 1[0m
+  [1m[35mRole Exists (0.9ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Администратор' LIMIT 1
+  [1m[36mSQL (1.1ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"], ["created_at", "2017-05-24 12:37:41.737115"], ["updated_at", "2017-05-24 12:37:41.737115"]]
+  [1m[35m (18.1ms)[0m  COMMIT
+  [1m[36mRole Load (0.8ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mRole Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'operator' LIMIT 1[0m
+  [1m[35mRole Exists (0.7ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Оператор' LIMIT 1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"], ["created_at", "2017-05-24 12:37:41.766469"], ["updated_at", "2017-05-24 12:37:41.766469"]]
+  [1m[35m (12.3ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  INSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["role_id", 1], ["user_id", 1], ["created_at", "2017-05-24 12:37:41.818643"], ["updated_at", "2017-05-24 12:37:41.818643"]]
+  [1m[36m (14.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["role_id", 2], ["user_id", 2], ["created_at", "2017-05-24 12:37:41.839722"], ["updated_at", "2017-05-24 12:37:41.839722"]]
+  [1m[35m (4.7ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "departments" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "DepartmentName"], ["created_at", "2017-05-24 12:37:41.870120"], ["updated_at", "2017-05-24 12:37:41.870120"]]
+  [1m[36m (18.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mWorker Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1[0m
+  [1m[35mWorker Exists (0.8ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1
+  [1m[36mSQL (1.5ms)[0m  [1mINSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["fn", "fn"], ["sn", "sn"], ["ln", "ln"], ["passport", "0123456789"], ["inn", "012345678901"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-05-24 12:37:41.935494"], ["updated_at", "2017-05-24 12:37:41.935494"]]
+  [1m[35m (19.4ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mWorker Exists (0.7ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1
+  [1m[36mWorker Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  ROLLBACK
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 1000], ["created_at", "2017-05-24 12:37:42.718652"], ["updated_at", "2017-05-24 12:37:42.718652"]]
+  [1m[36m (13.5ms)[0m  [1mCOMMIT[0m
+  [1m[36m (118.3ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (60.9ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVersions (20151203152020)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (107.2ms)[0m  [1mCREATE TABLE "versions" ("id" serial primary key, "item_type" character varying NOT NULL, "item_id" integer NOT NULL, "event" character varying NOT NULL, "whodunnit" character varying, "object" text, "created_at" timestamp) [0m
+  [1m[35m (58.4ms)[0m  CREATE  INDEX  "index_versions_on_item_type_and_item_id" ON "versions"  ("item_type", "item_id")
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151203152020"]]
+  [1m[35m (17.7ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20151203154714)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (102.1ms)[0m  CREATE TABLE "delayed_jobs" ("id" serial primary key, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" timestamp, "locked_at" timestamp, "failed_at" timestamp, "locked_by" character varying, "queue" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (51.0ms)[0m  [1mCREATE  INDEX  "delayed_jobs_priority" ON "delayed_jobs"  ("priority", "run_at")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151203154714"]]
+  [1m[36m (20.7ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryCore (20151204090515)
+  [1m[35m (0.5ms)[0m  BEGIN
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/oag2/Ruby on Rails/kurs-master/db/migrate/20151204090515_sorcery_core.rb:8)
+  [1m[36m (108.8ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "email" character varying NOT NULL, "crypted_password" character varying, "salt" character varying, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (74.0ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090515"]]
+  [1m[35m (19.0ms)[0m  COMMIT
+Migrating to SorceryRememberMe (20151204090516)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "users" ADD "remember_me_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "remember_me_token_expires_at" timestamp[0m
+  [1m[35m (45.9ms)[0m  CREATE  INDEX  "index_users_on_remember_me_token" ON "users"  ("remember_me_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090516"]]
+  [1m[35m (19.1ms)[0m  COMMIT
+Migrating to SorceryResetPassword (20151204090517)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "reset_password_token" character varying
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "reset_password_token_expires_at" timestamp[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "reset_password_email_sent_at" timestamp
+  [1m[36m (37.0ms)[0m  [1mCREATE  INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090517"]]
+  [1m[36m (18.9ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryUserActivation (20151204090518)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.9ms)[0m  [1mALTER TABLE "users" ADD "activation_state" character varying[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "users" ADD "activation_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "activation_token_expires_at" timestamp[0m
+  [1m[35m (56.9ms)[0m  CREATE  INDEX  "index_users_on_activation_token" ON "users"  ("activation_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090518"]]
+  [1m[35m (18.6ms)[0m  COMMIT
+Migrating to SorceryBruteForceProtection (20151204090519)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (312.4ms)[0m  ALTER TABLE "users" ADD "failed_logins_count" integer DEFAULT 0
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "lock_expires_at" timestamp[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "unlock_token" character varying
+  [1m[36m (48.6ms)[0m  [1mCREATE  INDEX  "index_users_on_unlock_token" ON "users"  ("unlock_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090519"]]
+  [1m[36m (16.5ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryActivityLogging (20151204090520)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "last_login_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "last_logout_at" timestamp
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "last_activity_at" timestamp[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "users" ADD "last_login_from_ip_address" character varying
+  [1m[36m (58.5ms)[0m  [1mCREATE  INDEX  "index_users_on_last_logout_at_and_last_activity_at" ON "users"  ("last_logout_at", "last_activity_at")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090520"]]
+  [1m[36m (14.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoles (20170409204945)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (154.0ms)[0m  [1mCREATE TABLE "roles" ("id" serial primary key, "name" character varying NOT NULL, "info" character varying NOT NULL, "full_info" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (66.4ms)[0m  CREATE UNIQUE INDEX  "index_roles_on_name" ON "roles"  ("name")
+  [1m[36m (52.2ms)[0m  [1mCREATE UNIQUE INDEX  "index_roles_on_info" ON "roles"  ("info")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409204945"]]
+  [1m[36m (25.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoleUsers (20170409205031)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (114.0ms)[0m  [1mCREATE TABLE "role_users" ("id" serial primary key, "role_id" integer NOT NULL, "user_id" integer NOT NULL, "data" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (40.2ms)[0m  CREATE  INDEX  "index_role_users_on_role_id" ON "role_users"  ("role_id")
+  [1m[36m (40.0ms)[0m  [1mCREATE  INDEX  "index_role_users_on_user_id" ON "role_users"  ("user_id")[0m
+  [1m[35m (2.9ms)[0m  ALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d517f3214f"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+
+  [1m[36m (2.5ms)[0m  [1mALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d225876829"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409205031"]]
+  [1m[36m (17.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddBirthdayToUser (20170501085108)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.8ms)[0m  [1mALTER TABLE "users" ADD "birthday" date[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170501085108"]]
+  [1m[36m (4.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDepartments (20170519175107)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (114.5ms)[0m  [1mCREATE TABLE "departments" ("id" serial primary key, "name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175107"]]
+  [1m[36m (23.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkers (20170519175219)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (114.8ms)[0m  [1mCREATE TABLE "workers" ("id" serial primary key, "sn" character varying NOT NULL, "fn" character varying NOT NULL, "ln" character varying NOT NULL, "passport" character varying NOT NULL, "inn" character varying NOT NULL, "birthday" date NOT NULL, "position" character varying NOT NULL, "department_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (87.7ms)[0m  CREATE UNIQUE INDEX  "index_workers_on_passport" ON "workers"  ("passport")
+  [1m[36m (40.7ms)[0m  [1mCREATE UNIQUE INDEX  "index_workers_on_inn" ON "workers"  ("inn")[0m
+  [1m[35m (40.8ms)[0m  CREATE  INDEX  "index_workers_on_department_id" ON "workers"  ("department_id")
+  [1m[36m (2.7ms)[0m  [1mALTER TABLE "workers" ADD CONSTRAINT "fk_rails_a707a1612d"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175219"]]
+  [1m[36m (15.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateProjects (20170519175231)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (174.5ms)[0m  [1mCREATE TABLE "projects" ("id" serial primary key, "name" character varying NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "price" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175231"]]
+  [1m[36m (17.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkerProjects (20170519175250)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (52.8ms)[0m  [1mCREATE TABLE "worker_projects" ("id" serial primary key, "worker_id" integer NOT NULL, "project_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (40.9ms)[0m  CREATE  INDEX  "index_worker_projects_on_worker_id" ON "worker_projects"  ("worker_id")
+  [1m[36m (73.7ms)[0m  [1mCREATE  INDEX  "index_worker_projects_on_project_id" ON "worker_projects"  ("project_id")[0m
+  [1m[35m (3.0ms)[0m  ALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_7c9f8f33e0"
+FOREIGN KEY ("worker_id")
+  REFERENCES "workers" ("id")
+
+  [1m[36m (2.6ms)[0m  [1mALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_c5fb282d59"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175250"]]
+  [1m[36m (21.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.5ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (5.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'delayed_jobs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (5.1ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'departments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.0ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'role_users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.5ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.6ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.7ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'versions'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.8ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'worker_projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.6ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'workers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.5ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mUser Load (0.8ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "admin@localhost"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Exists (1.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@localhost') LIMIT 1[0m
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "admin@localhost"], ["salt", "QLQUi1eeGkBY7xc6F5nv"], ["crypted_password", "$2a$10$05nN6/7CAoYDrHdlsJdnH.jH0QowFxsGSZmStrr98kw4o7PF5A/lu"], ["created_at", "2017-05-24 12:38:04.496734"], ["updated_at", "2017-05-24 12:38:04.496734"], ["activation_token", "6FidzXVJUKqEp8b-7u3w"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (9.7ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (10.9ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 348.8ms
+
+Sent mail to admin@localhost (13.5ms)
+Date: Wed, 24 May 2017 15:38:04 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257eacd1d34_9be2ae4d9315964771f6@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257eaccf3d3_9be2ae4d931596477053";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257eaccf3d3_9be2ae4d931596477053
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/6FidzXVJUKqEp8b-7u3w/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257eaccf3d3_9be2ae4d931596477053
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/6FidzXVJUKqEp8b-7u3w/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257eaccf3d3_9be2ae4d931596477053--
+
+  [1m[36m (30.2ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (4.4ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (4.8ms)
+
+UserMailer#activation_success_email: processed outbound mail in 32.1ms
+
+Sent mail to admin@localhost (8.4ms)
+Date: Wed, 24 May 2017 15:38:04 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257eace426e_9be2ae4d93159647739e@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257eace29a1_9be2ae4d93159647721";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257eace29a1_9be2ae4d93159647721
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257eace29a1_9be2ae4d93159647721
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257eace29a1_9be2ae4d93159647721--
+
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (1.5ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:38:04.942043"], ["id", 1]]
+  [1m[35m (16.8ms)[0m  COMMIT
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "user@localhost"]]
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('user@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "user@localhost"], ["salt", "xMoChSW9uWAXAesVUHZb"], ["crypted_password", "$2a$10$qXdmGhszs8YyD38aIhX88uzERdVE/DBoaJLiC6qC5xRgAyGWcn.yi"], ["created_at", "2017-05-24 12:38:05.176019"], ["updated_at", "2017-05-24 12:38:05.176019"], ["activation_token", "h4zxVSAhDxccLwpActRH"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 13.8ms
+
+Sent mail to user@localhost (7.0ms)
+Date: Wed, 24 May 2017 15:38:05 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257ead2f7b4_9be2ae4d9315964775f5@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257ead2e436_9be2ae4d9315964774ab";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257ead2e436_9be2ae4d9315964774ab
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/h4zxVSAhDxccLwpActRH/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257ead2e436_9be2ae4d9315964774ab
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/h4zxVSAhDxccLwpActRH/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257ead2e436_9be2ae4d9315964774ab--
+
+  [1m[36m (7.8ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (0.2ms)
+
+UserMailer#activation_success_email: processed outbound mail in 15.9ms
+
+Sent mail to user@localhost (7.9ms)
+Date: Wed, 24 May 2017 15:38:05 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257ead37c0d_9be2ae4d93159647776@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257ead3667a_9be2ae4d9315964776dc";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257ead3667a_9be2ae4d9315964776dc
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257ead3667a_9be2ae4d9315964776dc
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257ead3667a_9be2ae4d9315964776dc--
+
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:38:05.235429"], ["id", 2]]
+  [1m[35m (3.6ms)[0m  COMMIT
+  [1m[36mRole Load (0.4ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mRole Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'admin' LIMIT 1[0m
+  [1m[35mRole Exists (0.7ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Администратор' LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"], ["created_at", "2017-05-24 12:38:05.265126"], ["updated_at", "2017-05-24 12:38:05.265126"]]
+  [1m[35m (6.9ms)[0m  COMMIT
+  [1m[36mRole Load (0.6ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"]]
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mRole Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'operator' LIMIT 1[0m
+  [1m[35mRole Exists (0.4ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Оператор' LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"], ["created_at", "2017-05-24 12:38:05.280816"], ["updated_at", "2017-05-24 12:38:05.280816"]]
+  [1m[35m (3.3ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["role_id", 1], ["user_id", 1], ["created_at", "2017-05-24 12:38:05.310863"], ["updated_at", "2017-05-24 12:38:05.310863"]]
+  [1m[36m (5.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["role_id", 2], ["user_id", 2], ["created_at", "2017-05-24 12:38:05.321598"], ["updated_at", "2017-05-24 12:38:05.321598"]]
+  [1m[35m (7.0ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "departments" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "DepartmentName"], ["created_at", "2017-05-24 12:38:05.343090"], ["updated_at", "2017-05-24 12:38:05.343090"]]
+  [1m[36m (7.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mWorker Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1[0m
+  [1m[35mWorker Exists (0.3ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["fn", "fn"], ["sn", "sn"], ["ln", "ln"], ["passport", "0123456789"], ["inn", "012345678901"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-05-24 12:38:05.379058"], ["updated_at", "2017-05-24 12:38:05.379058"]]
+  [1m[35m (4.5ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mWorker Exists (0.5ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1
+  [1m[36mWorker Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 1000], ["created_at", "2017-05-24 12:38:05.921238"], ["updated_at", "2017-05-24 12:38:05.921238"]]
+  [1m[36m (28.5ms)[0m  [1mCOMMIT[0m
+  [1m[36mWorker Load (1.3ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[36m (83.1ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (73.0ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVersions (20151203152020)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (135.8ms)[0m  [1mCREATE TABLE "versions" ("id" serial primary key, "item_type" character varying NOT NULL, "item_id" integer NOT NULL, "event" character varying NOT NULL, "whodunnit" character varying, "object" text, "created_at" timestamp) [0m
+  [1m[35m (40.3ms)[0m  CREATE  INDEX  "index_versions_on_item_type_and_item_id" ON "versions"  ("item_type", "item_id")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151203152020"]]
+  [1m[35m (21.9ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20151203154714)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (121.1ms)[0m  CREATE TABLE "delayed_jobs" ("id" serial primary key, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" timestamp, "locked_at" timestamp, "failed_at" timestamp, "locked_by" character varying, "queue" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (39.2ms)[0m  [1mCREATE  INDEX  "delayed_jobs_priority" ON "delayed_jobs"  ("priority", "run_at")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151203154714"]]
+  [1m[36m (23.4ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryCore (20151204090515)
+  [1m[35m (0.3ms)[0m  BEGIN
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/oag2/Ruby on Rails/kurs-master/db/migrate/20151204090515_sorcery_core.rb:8)
+  [1m[36m (108.4ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "email" character varying NOT NULL, "crypted_password" character varying, "salt" character varying, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (57.0ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090515"]]
+  [1m[35m (22.5ms)[0m  COMMIT
+Migrating to SorceryRememberMe (20151204090516)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "remember_me_token" character varying
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "remember_me_token_expires_at" timestamp[0m
+  [1m[35m (55.8ms)[0m  CREATE  INDEX  "index_users_on_remember_me_token" ON "users"  ("remember_me_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090516"]]
+  [1m[35m (22.3ms)[0m  COMMIT
+Migrating to SorceryResetPassword (20151204090517)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "reset_password_token" character varying
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "reset_password_token_expires_at" timestamp[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "reset_password_email_sent_at" timestamp
+  [1m[36m (69.6ms)[0m  [1mCREATE  INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090517"]]
+  [1m[36m (20.0ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryUserActivation (20151204090518)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.8ms)[0m  [1mALTER TABLE "users" ADD "activation_state" character varying[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "activation_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "activation_token_expires_at" timestamp[0m
+  [1m[35m (56.2ms)[0m  CREATE  INDEX  "index_users_on_activation_token" ON "users"  ("activation_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090518"]]
+  [1m[35m (19.2ms)[0m  COMMIT
+Migrating to SorceryBruteForceProtection (20151204090519)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (321.3ms)[0m  ALTER TABLE "users" ADD "failed_logins_count" integer DEFAULT 0
+  [1m[36m (0.9ms)[0m  [1mALTER TABLE "users" ADD "lock_expires_at" timestamp[0m
+  [1m[35m (0.9ms)[0m  ALTER TABLE "users" ADD "unlock_token" character varying
+  [1m[36m (58.2ms)[0m  [1mCREATE  INDEX  "index_users_on_unlock_token" ON "users"  ("unlock_token")[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090519"]]
+  [1m[36m (17.0ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryActivityLogging (20151204090520)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "last_login_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "last_logout_at" timestamp
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "last_activity_at" timestamp[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "last_login_from_ip_address" character varying
+  [1m[36m (59.5ms)[0m  [1mCREATE  INDEX  "index_users_on_last_logout_at_and_last_activity_at" ON "users"  ("last_logout_at", "last_activity_at")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090520"]]
+  [1m[36m (16.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoles (20170409204945)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (111.9ms)[0m  [1mCREATE TABLE "roles" ("id" serial primary key, "name" character varying NOT NULL, "info" character varying NOT NULL, "full_info" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (39.7ms)[0m  CREATE UNIQUE INDEX  "index_roles_on_name" ON "roles"  ("name")
+  [1m[36m (40.0ms)[0m  [1mCREATE UNIQUE INDEX  "index_roles_on_info" ON "roles"  ("info")[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409204945"]]
+  [1m[36m (14.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoleUsers (20170409205031)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (111.9ms)[0m  [1mCREATE TABLE "role_users" ("id" serial primary key, "role_id" integer NOT NULL, "user_id" integer NOT NULL, "data" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (40.5ms)[0m  CREATE  INDEX  "index_role_users_on_role_id" ON "role_users"  ("role_id")
+  [1m[36m (40.4ms)[0m  [1mCREATE  INDEX  "index_role_users_on_user_id" ON "role_users"  ("user_id")[0m
+  [1m[35m (4.1ms)[0m  ALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d517f3214f"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+
+  [1m[36m (2.7ms)[0m  [1mALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d225876829"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409205031"]]
+  [1m[36m (16.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddBirthdayToUser (20170501085108)
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36m (0.9ms)[0m  [1mALTER TABLE "users" ADD "birthday" date[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170501085108"]]
+  [1m[36m (2.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDepartments (20170519175107)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (114.0ms)[0m  [1mCREATE TABLE "departments" ("id" serial primary key, "name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175107"]]
+  [1m[36m (24.1ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkers (20170519175219)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (102.6ms)[0m  [1mCREATE TABLE "workers" ("id" serial primary key, "sn" character varying NOT NULL, "fn" character varying NOT NULL, "ln" character varying NOT NULL, "passport" character varying NOT NULL, "inn" character varying NOT NULL, "birthday" date NOT NULL, "position" character varying NOT NULL, "department_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (62.6ms)[0m  CREATE UNIQUE INDEX  "index_workers_on_passport" ON "workers"  ("passport")
+  [1m[36m (40.1ms)[0m  [1mCREATE UNIQUE INDEX  "index_workers_on_inn" ON "workers"  ("inn")[0m
+  [1m[35m (40.0ms)[0m  CREATE  INDEX  "index_workers_on_department_id" ON "workers"  ("department_id")
+  [1m[36m (2.8ms)[0m  [1mALTER TABLE "workers" ADD CONSTRAINT "fk_rails_a707a1612d"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175219"]]
+  [1m[36m (17.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateProjects (20170519175231)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (141.3ms)[0m  [1mCREATE TABLE "projects" ("id" serial primary key, "name" character varying NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "price" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175231"]]
+  [1m[36m (6.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkerProjects (20170519175250)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (51.8ms)[0m  [1mCREATE TABLE "worker_projects" ("id" serial primary key, "worker_id" integer NOT NULL, "project_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (41.5ms)[0m  CREATE  INDEX  "index_worker_projects_on_worker_id" ON "worker_projects"  ("worker_id")
+  [1m[36m (40.8ms)[0m  [1mCREATE  INDEX  "index_worker_projects_on_project_id" ON "worker_projects"  ("project_id")[0m
+  [1m[35m (2.8ms)[0m  ALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_7c9f8f33e0"
+FOREIGN KEY ("worker_id")
+  REFERENCES "workers" ("id")
+
+  [1m[36m (2.5ms)[0m  [1mALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_c5fb282d59"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175250"]]
+  [1m[36m (22.5ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (4.5ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'delayed_jobs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.9ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'departments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.2ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'role_users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.3ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.2ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'versions'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'worker_projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.3ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'workers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "admin@localhost"]]
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "admin@localhost"], ["salt", "n3zyVDiwRuiEftS5avyR"], ["crypted_password", "$2a$10$mr6RJtSwHVtJ35P0rFGiN.fGj2r9baxjHdLXhiffA0dC9mERiarRu"], ["created_at", "2017-05-24 12:39:59.646231"], ["updated_at", "2017-05-24 12:39:59.646231"], ["activation_token", "wzstJQjwZq71wAgCAM8Q"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (8.3ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (3.3ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 311.6ms
+
+Sent mail to admin@localhost (14.7ms)
+Date: Wed, 24 May 2017 15:39:59 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257f1fecf25_a0e2ac4fac899688165c@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f1fea582_a0e2ac4fac89968815ca";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f1fea582_a0e2ac4fac89968815ca
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/wzstJQjwZq71wAgCAM8Q/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f1fea582_a0e2ac4fac89968815ca
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/wzstJQjwZq71wAgCAM8Q/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f1fea582_a0e2ac4fac89968815ca--
+
+  [1m[36m (3.5ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (3.8ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (3.6ms)
+
+UserMailer#activation_success_email: processed outbound mail in 21.0ms
+
+Sent mail to admin@localhost (7.2ms)
+Date: Wed, 24 May 2017 15:40:00 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257f201c52_a0e2ac4fac8996881899@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f2092c_a0e2ac4fac89968817a";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f2092c_a0e2ac4fac89968817a
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f2092c_a0e2ac4fac89968817a
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f2092c_a0e2ac4fac89968817a--
+
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:40:00.013888"], ["id", 1]]
+  [1m[35m (10.3ms)[0m  COMMIT
+  [1m[36mUser Load (0.6ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "user@localhost"]]
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('user@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "user@localhost"], ["salt", "bjPhiNCpE1PPQmEcmU5D"], ["crypted_password", "$2a$10$q.79rtZ0RNMP8rNabOz96euug6wL8jAAzI.9o/FqmthO.533MBy82"], ["created_at", "2017-05-24 12:40:00.239782"], ["updated_at", "2017-05-24 12:40:00.239782"], ["activation_token", "h1u3HZEeXAXPfoyVPQ_w"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 13.3ms
+
+Sent mail to user@localhost (7.4ms)
+Date: Wed, 24 May 2017 15:40:00 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257f203ee95_a0e2ac4fac89968820b2@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f203db1e_a0e2ac4fac899688192c";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f203db1e_a0e2ac4fac899688192c
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/h1u3HZEeXAXPfoyVPQ_w/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f203db1e_a0e2ac4fac899688192c
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/h1u3HZEeXAXPfoyVPQ_w/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f203db1e_a0e2ac4fac899688192c--
+
+  [1m[36m (7.7ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_success_email: processed outbound mail in 15.9ms
+
+Sent mail to user@localhost (8.1ms)
+Date: Wed, 24 May 2017 15:40:00 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257f204735a_a0e2ac4fac89968822fa@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f2045d7e_a0e2ac4fac89968821a9";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f2045d7e_a0e2ac4fac89968821a9
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f2045d7e_a0e2ac4fac89968821a9
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f2045d7e_a0e2ac4fac89968821a9--
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:40:00.298776"], ["id", 2]]
+  [1m[35m (3.7ms)[0m  COMMIT
+  [1m[36mRole Load (0.9ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mRole Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'admin' LIMIT 1[0m
+  [1m[35mRole Exists (0.8ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Администратор' LIMIT 1
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"], ["created_at", "2017-05-24 12:40:00.329257"], ["updated_at", "2017-05-24 12:40:00.329257"]]
+  [1m[35m (5.8ms)[0m  COMMIT
+  [1m[36mRole Load (0.7ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mRole Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'operator' LIMIT 1[0m
+  [1m[35mRole Exists (0.7ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Оператор' LIMIT 1
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"], ["created_at", "2017-05-24 12:40:00.345014"], ["updated_at", "2017-05-24 12:40:00.345014"]]
+  [1m[35m (13.3ms)[0m  COMMIT
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  INSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["role_id", 1], ["user_id", 1], ["created_at", "2017-05-24 12:40:00.389915"], ["updated_at", "2017-05-24 12:40:00.389915"]]
+  [1m[36m (11.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["role_id", 2], ["user_id", 2], ["created_at", "2017-05-24 12:40:00.407315"], ["updated_at", "2017-05-24 12:40:00.407315"]]
+  [1m[35m (6.2ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "departments" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "DepartmentName"], ["created_at", "2017-05-24 12:40:00.430180"], ["updated_at", "2017-05-24 12:40:00.430180"]]
+  [1m[36m (5.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mWorker Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1[0m
+  [1m[35mWorker Exists (0.9ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1
+  [1m[36mSQL (1.5ms)[0m  [1mINSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["fn", "fn"], ["sn", "sn"], ["ln", "ln"], ["passport", "0123456789"], ["inn", "012345678901"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-05-24 12:40:00.468893"], ["updated_at", "2017-05-24 12:40:00.468893"]]
+  [1m[35m (9.3ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mWorker Exists (0.8ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1
+  [1m[36mWorker Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  ROLLBACK
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 1000], ["created_at", "2017-05-24 12:40:01.079475"], ["updated_at", "2017-05-24 12:40:01.079475"]]
+  [1m[36m (109.5ms)[0m  [1mCOMMIT[0m
+  [1m[36mWorker Load (1.3ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[36m (77.4ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (72.1ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVersions (20151203152020)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (119.8ms)[0m  [1mCREATE TABLE "versions" ("id" serial primary key, "item_type" character varying NOT NULL, "item_id" integer NOT NULL, "event" character varying NOT NULL, "whodunnit" character varying, "object" text, "created_at" timestamp) [0m
+  [1m[35m (39.6ms)[0m  CREATE  INDEX  "index_versions_on_item_type_and_item_id" ON "versions"  ("item_type", "item_id")
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151203152020"]]
+  [1m[35m (24.9ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20151203154714)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (117.2ms)[0m  CREATE TABLE "delayed_jobs" ("id" serial primary key, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" timestamp, "locked_at" timestamp, "failed_at" timestamp, "locked_by" character varying, "queue" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (40.7ms)[0m  [1mCREATE  INDEX  "delayed_jobs_priority" ON "delayed_jobs"  ("priority", "run_at")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151203154714"]]
+  [1m[36m (17.5ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryCore (20151204090515)
+  [1m[35m (0.3ms)[0m  BEGIN
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/oag2/Ruby on Rails/kurs-master/db/migrate/20151204090515_sorcery_core.rb:8)
+  [1m[36m (98.8ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "email" character varying NOT NULL, "crypted_password" character varying, "salt" character varying, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (40.7ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090515"]]
+  [1m[35m (27.3ms)[0m  COMMIT
+Migrating to SorceryRememberMe (20151204090516)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "remember_me_token" character varying
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "remember_me_token_expires_at" timestamp[0m
+  [1m[35m (61.5ms)[0m  CREATE  INDEX  "index_users_on_remember_me_token" ON "users"  ("remember_me_token")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090516"]]
+  [1m[35m (15.0ms)[0m  COMMIT
+Migrating to SorceryResetPassword (20151204090517)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "reset_password_token" character varying
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "reset_password_token_expires_at" timestamp[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD "reset_password_email_sent_at" timestamp
+  [1m[36m (49.2ms)[0m  [1mCREATE  INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090517"]]
+  [1m[36m (15.1ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryUserActivation (20151204090518)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "activation_state" character varying[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "activation_token" character varying
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "activation_token_expires_at" timestamp[0m
+  [1m[35m (50.0ms)[0m  CREATE  INDEX  "index_users_on_activation_token" ON "users"  ("activation_token")
+  [1m[36mSQL (1.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090518"]]
+  [1m[35m (24.2ms)[0m  COMMIT
+Migrating to SorceryBruteForceProtection (20151204090519)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (328.5ms)[0m  ALTER TABLE "users" ADD "failed_logins_count" integer DEFAULT 0
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "lock_expires_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "unlock_token" character varying
+  [1m[36m (48.0ms)[0m  [1mCREATE  INDEX  "index_users_on_unlock_token" ON "users"  ("unlock_token")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090519"]]
+  [1m[36m (23.0ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryActivityLogging (20151204090520)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "last_login_at" timestamp[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD "last_logout_at" timestamp
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "last_activity_at" timestamp[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "users" ADD "last_login_from_ip_address" character varying
+  [1m[36m (52.1ms)[0m  [1mCREATE  INDEX  "index_users_on_last_logout_at_and_last_activity_at" ON "users"  ("last_logout_at", "last_activity_at")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090520"]]
+  [1m[36m (21.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoles (20170409204945)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (95.4ms)[0m  [1mCREATE TABLE "roles" ("id" serial primary key, "name" character varying NOT NULL, "info" character varying NOT NULL, "full_info" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (62.1ms)[0m  CREATE UNIQUE INDEX  "index_roles_on_name" ON "roles"  ("name")
+  [1m[36m (40.3ms)[0m  [1mCREATE UNIQUE INDEX  "index_roles_on_info" ON "roles"  ("info")[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409204945"]]
+  [1m[36m (19.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoleUsers (20170409205031)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (96.7ms)[0m  [1mCREATE TABLE "role_users" ("id" serial primary key, "role_id" integer NOT NULL, "user_id" integer NOT NULL, "data" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (62.0ms)[0m  CREATE  INDEX  "index_role_users_on_role_id" ON "role_users"  ("role_id")
+  [1m[36m (40.1ms)[0m  [1mCREATE  INDEX  "index_role_users_on_user_id" ON "role_users"  ("user_id")[0m
+  [1m[35m (3.8ms)[0m  ALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d517f3214f"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+
+  [1m[36m (3.2ms)[0m  [1mALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d225876829"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409205031"]]
+  [1m[36m (19.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddBirthdayToUser (20170501085108)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "birthday" date[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170501085108"]]
+  [1m[36m (5.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDepartments (20170519175107)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (109.0ms)[0m  [1mCREATE TABLE "departments" ("id" serial primary key, "name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175107"]]
+  [1m[36m (17.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkers (20170519175219)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (109.5ms)[0m  [1mCREATE TABLE "workers" ("id" serial primary key, "sn" character varying NOT NULL, "fn" character varying NOT NULL, "ln" character varying NOT NULL, "passport" character varying NOT NULL, "inn" character varying NOT NULL, "birthday" date NOT NULL, "position" character varying NOT NULL, "department_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (39.9ms)[0m  CREATE UNIQUE INDEX  "index_workers_on_passport" ON "workers"  ("passport")
+  [1m[36m (51.1ms)[0m  [1mCREATE UNIQUE INDEX  "index_workers_on_inn" ON "workers"  ("inn")[0m
+  [1m[35m (40.0ms)[0m  CREATE  INDEX  "index_workers_on_department_id" ON "workers"  ("department_id")
+  [1m[36m (2.4ms)[0m  [1mALTER TABLE "workers" ADD CONSTRAINT "fk_rails_a707a1612d"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175219"]]
+  [1m[36m (24.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateProjects (20170519175231)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (100.8ms)[0m  [1mCREATE TABLE "projects" ("id" serial primary key, "name" character varying NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "price" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175231"]]
+  [1m[36m (15.1ms)[0m  [1mCOMMIT[0m
+Migrating to CreateWorkerProjects (20170519175250)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (44.6ms)[0m  [1mCREATE TABLE "worker_projects" ("id" serial primary key, "worker_id" integer NOT NULL, "project_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (292.1ms)[0m  CREATE  INDEX  "index_worker_projects_on_worker_id" ON "worker_projects"  ("worker_id")
+  [1m[36m (43.2ms)[0m  [1mCREATE  INDEX  "index_worker_projects_on_project_id" ON "worker_projects"  ("project_id")[0m
+  [1m[35m (2.9ms)[0m  ALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_7c9f8f33e0"
+FOREIGN KEY ("worker_id")
+  REFERENCES "workers" ("id")
+
+  [1m[36m (2.7ms)[0m  [1mALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_c5fb282d59"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170519175250"]]
+  [1m[36m (18.2ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.5ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (4.5ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'delayed_jobs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.9ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'departments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.3ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.8ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'role_users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.7ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.8ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.2ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'versions'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.4ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'worker_projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.7ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'workers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "admin@localhost"]]
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "admin@localhost"], ["salt", "ASph_Pzz4R9ngunc-3sL"], ["crypted_password", "$2a$10$zYL/5OL2ub.uog4hxuRuXeAiEAN31b.54uaWbt5BgE84huyFMMTSW"], ["created_at", "2017-05-24 12:40:35.845248"], ["updated_at", "2017-05-24 12:40:35.845248"], ["activation_token", "s86TsGaszbvw9uMxztSb"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (8.0ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (3.3ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 312.6ms
+
+Sent mail to admin@localhost (13.3ms)
+Date: Wed, 24 May 2017 15:40:36 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257f4429775_a3b2b0ab048596445876@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f442722a_a3b2b0ab048596445741";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f442722a_a3b2b0ab048596445741
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/s86TsGaszbvw9uMxztSb/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f442722a_a3b2b0ab048596445741
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/s86TsGaszbvw9uMxztSb/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f442722a_a3b2b0ab048596445741--
+
+  [1m[36m (24.8ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (3.1ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (3.0ms)
+
+UserMailer#activation_success_email: processed outbound mail in 21.9ms
+
+Sent mail to admin@localhost (7.1ms)
+Date: Wed, 24 May 2017 15:40:36 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <59257f4437ba6_a3b2b0ab04859644603d@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f4436b13_a3b2b0ab0485964459fe";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f4436b13_a3b2b0ab0485964459fe
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f4436b13_a3b2b0ab0485964459fe
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f4436b13_a3b2b0ab0485964459fe--
+
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:40:36.235237"], ["id", 1]]
+  [1m[35m (7.2ms)[0m  COMMIT
+  [1m[36mUser Load (0.8ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "user@localhost"]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('user@localhost') LIMIT 1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "user@localhost"], ["salt", "qaTWPg3YbxVEyG4tWj3K"], ["crypted_password", "$2a$10$XmXw5gLWODtaYhiNvwzSguEI103JEt6Jg1vgr4jsp/CO/nSvPUoem"], ["created_at", "2017-05-24 12:40:36.460015"], ["updated_at", "2017-05-24 12:40:36.460015"], ["activation_token", "WwydkR1Y4eN9VB2x3yrJ"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 16.2ms
+
+Sent mail to user@localhost (7.0ms)
+Date: Wed, 24 May 2017 15:40:36 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257f4475c2e_a3b2b0ab04859644628@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f44749e1_a3b2b0ab04859644618b";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f44749e1_a3b2b0ab04859644618b
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/WwydkR1Y4eN9VB2x3yrJ/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f44749e1_a3b2b0ab04859644618b
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/WwydkR1Y4eN9VB2x3yrJ/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f44749e1_a3b2b0ab04859644618b--
+
+  [1m[36m (13.1ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (0.2ms)
+
+UserMailer#activation_success_email: processed outbound mail in 15.6ms
+
+Sent mail to user@localhost (7.3ms)
+Date: Wed, 24 May 2017 15:40:36 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <59257f447f4a5_a3b2b0ab048596446454@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_59257f447e021_a3b2b0ab04859644632a";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_59257f447e021_a3b2b0ab04859644632a
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_59257f447e021_a3b2b0ab04859644632a
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_59257f447e021_a3b2b0ab04859644632a--
+
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-05-24 12:40:36.527818"], ["id", 2]]
+  [1m[35m (5.0ms)[0m  COMMIT
+  [1m[36mRole Load (0.6ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mRole Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'admin' LIMIT 1[0m
+  [1m[35mRole Exists (0.6ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Администратор' LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"], ["created_at", "2017-05-24 12:40:36.558707"], ["updated_at", "2017-05-24 12:40:36.558707"]]
+  [1m[35m (7.5ms)[0m  COMMIT
+  [1m[36mRole Load (0.9ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mRole Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'operator' LIMIT 1[0m
+  [1m[35mRole Exists (0.9ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Оператор' LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"], ["created_at", "2017-05-24 12:40:36.577684"], ["updated_at", "2017-05-24 12:40:36.577684"]]
+  [1m[35m (10.3ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  INSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["role_id", 1], ["user_id", 1], ["created_at", "2017-05-24 12:40:36.619508"], ["updated_at", "2017-05-24 12:40:36.619508"]]
+  [1m[36m (11.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["role_id", 2], ["user_id", 2], ["created_at", "2017-05-24 12:40:36.637651"], ["updated_at", "2017-05-24 12:40:36.637651"]]
+  [1m[35m (6.0ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "departments" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "DepartmentName"], ["created_at", "2017-05-24 12:40:36.660264"], ["updated_at", "2017-05-24 12:40:36.660264"]]
+  [1m[36m (5.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mWorker Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1[0m
+  [1m[35mWorker Exists (0.9ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1
+  [1m[36mSQL (1.5ms)[0m  [1mINSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["fn", "fn"], ["sn", "sn"], ["ln", "ln"], ["passport", "0123456789"], ["inn", "012345678901"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-05-24 12:40:36.698859"], ["updated_at", "2017-05-24 12:40:36.698859"]]
+  [1m[35m (10.2ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mWorker Exists (0.8ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456788' LIMIT 1
+  [1m[36mWorker Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678981' LIMIT 1[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"  [["fn", "fn"], ["sn", "sn"], ["ln", "ln"], ["passport", "0123456788"], ["inn", "012345678981"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-05-24 12:40:36.720775"], ["updated_at", "2017-05-24 12:40:36.720775"]]
+  [1m[36m (10.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 1000], ["created_at", "2017-05-24 12:40:36.755876"], ["updated_at", "2017-05-24 12:40:36.755876"]]
+  [1m[35m (9.5ms)[0m  COMMIT
+  [1m[36mWorker Load (1.0ms)[0m  [1mSELECT "workers".* FROM "workers"[0m

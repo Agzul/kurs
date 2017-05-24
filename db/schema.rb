@@ -135,6 +135,8 @@ ActiveRecord::Schema.define(version: 20170519175250) do
   end
 
   add_index "workers", ["department_id"], name: "index_workers_on_department_id", using: :btree
+  add_index "workers", ["inn"], name: "index_workers_on_inn", unique: true, using: :btree
+  add_index "workers", ["passport"], name: "index_workers_on_passport", unique: true, using: :btree
 
   add_foreign_key "role_users", "roles"
   add_foreign_key "role_users", "users"

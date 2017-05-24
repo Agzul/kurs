@@ -12,6 +12,9 @@
 %p
   %b Цена:
   = @project.price
+%p
+  %b Сотрудники:
+  = @project.worker_projects.map{ |wp| wp.worker.ln }.uniq.join(', ')
 
 = link_to 'Edit', edit_project_path(@project)
 \|

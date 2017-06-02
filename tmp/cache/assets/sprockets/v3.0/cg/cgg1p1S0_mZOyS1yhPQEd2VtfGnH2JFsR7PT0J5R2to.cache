@@ -1,0 +1,46 @@
+I"�(function() {
+  var wp_ready;
+
+  this.delete_one_wp = function(link) {
+    if (confirm("Вы уверены?")) {
+      link.parent().find("input[type=hidden].remove_fields").first().val("1");
+      return link.parent().parent().parent().parent().hide();
+    }
+  };
+
+  this.del_all_wps = function() {
+    $('a.remove_worker').on('click', function() {
+      window.delete_one_wp($(this));
+      return false;
+    });
+    return false;
+  };
+
+  this.add_new_wp = function() {
+    return $('#add_worker_link').on('click', function() {
+      var content, new_id, panel, regexp;
+      new_id = new Date().getTime();
+      regexp = new RegExp("new_worker", "g");
+      content = $(this).attr('data-content');
+      content = content.replace(regexp, new_id);
+      $(this).parent().parent().after(content);
+      panel = $(this).parent().parent().parent().find('.panel-info').first();
+      panel.find('a.remove_worker').on('click', function() {
+        window.delete_one_wp($(this));
+        return false;
+      });
+      return false;
+    });
+  };
+
+  wp_ready = function() {
+    window.add_new_wp();
+    return window.del_all_wps();
+  };
+
+  $(document).on('page:load', wp_ready);
+
+  $(document).ready(wp_ready);
+
+}).call(this);
+:ET

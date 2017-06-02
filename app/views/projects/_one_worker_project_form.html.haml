@@ -1,10 +1,11 @@
+-# nested_start
 .col-md-6
   %div{class: 'panel panel-'+ (i.kind_of?(Integer) ? 'success' : 'info')}
     .panel-heading
-      Сотрудник
       = i
+      сотрудник
       %span.toright
-        -# Кнопка для удаления связи роль-пользователь. См. role_users_helper
+        -# Кнопка для удаления связи сотрудник-проект. См. worker_projects_helper
         = link_to_remove_worker(fr)
       .clearfix
     .panel-body
@@ -15,5 +16,6 @@
             = fr.select(:worker_id,
             options_for_select(worker_options, fr.object.worker_id),
             {}, class: 'form-control')
-            -# role_options ищите в roles_heper
+            -# worker_options ищите в worker_heper
             = fr.error_messages_for(:worker_id)
+-# nested_finish

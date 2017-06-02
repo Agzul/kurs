@@ -1,13 +1,14 @@
 module WorkerProjectsHelper
-  def link_to_add_worker(form, project) #user -> project role -> worker
+  # nested_start role->worker user->project
+  def link_to_add_worker(form, project)
     # Создаём новый объект. Аналог build в ранних примерах
     new_object = WorkerProject.new()
     # Нам нужна nested-форма. В момент создания ссылки её ещё нет. Создадим её
-    # Все role_users в форме имеют свой номер
-    # Мы его пока заменям на фразу new_ru
+    # Все worker_projects в форме имеют свой номер
+    # Мы его пока заменям на фразу new_wp
     fields = form.fields_for(:worker_projects, new_object,
       :child_index => 'new_worker') do |fr|
-      render('projects/one_worker_project_form', fr: fr, i: 'Новая')
+      render('projects/one_worker_project_form', fr: fr, i: 'Новый')
     end
     # Ссылка будет обрабатываться javascript-ом поэтому адрес фиктивный
     link_to(?#, class: 'btn btn-info',
@@ -27,4 +28,5 @@ module WorkerProjectsHelper
       fa_icon('times', title: 'Удалить сотрудника') + ' Удалить'
     end
   end
+  # nested_finish
 end

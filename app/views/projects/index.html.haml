@@ -18,6 +18,7 @@
       %th Дата начала
       %th Дата окончания
       %th Цена
+      %th Сотрудники
       %th
 
 
@@ -28,6 +29,7 @@
         %td= project.start
         %td= project.end
         %td= project.price
+        %td= project.worker_projects.map{ |wp| wp.worker.sn }.join(", ")
         %td.right
           = link_to edit_project_path(project), class: 'btn btn-info' do
             = fa_icon :edit

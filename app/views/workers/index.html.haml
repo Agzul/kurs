@@ -7,7 +7,7 @@
 .page-header
   %h1= t('headers.workers.index')
 
-%table.table.table-hover.table-striped
+%table.table.table-hover.table-striped.table-responsive
   %caption
     = link_to new_worker_path, class: 'btn btn-success' do
       = fa_icon :plus
@@ -36,9 +36,9 @@
         %td= worker.position
         %td= worker.department.nil? ? "" : worker.department.name
         %td.right
+          = link_to worker, class: 'btn btn-warning' do
+            = fa_icon :eye
           = link_to edit_worker_path(worker), class: 'btn btn-info' do
             = fa_icon :edit
-            = t('buttons.edit')
           = link_to worker, :method => :delete, :data => { :confirm => t('buttons.confirm.worker') }, class: 'btn btn-danger' do
             = fa_icon :times
-            = t('buttons.destroy')

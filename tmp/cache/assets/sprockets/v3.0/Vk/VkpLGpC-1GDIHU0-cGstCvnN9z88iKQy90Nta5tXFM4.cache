@@ -1,0 +1,17 @@
+I"P(function() {
+  var department_ready;
+
+  this.add_new_department = function() {
+    return $('#add_department_link').on('click', function() {});
+  };
+
+  department_ready = function() {
+    return window.add_new_department();
+  };
+
+  $(document).on('page:load', department_ready);
+
+  $(document).ready(department_ready);
+
+}).call(this);
+:ET

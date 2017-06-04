@@ -1,0 +1,30 @@
+I"W(function() {
+  var department_ready;
+
+  this.add_new_department = function() {
+    return $('#add_department_link').on('click', function() {
+      var content, new_id, panel, regexp;
+      new_id = new Date().getTime();
+      regexp = new RegExp("new_department", "g");
+      content = $(this).attr('data-content');
+      content = content.replace(regexp, new_id);
+      $(this).parent().parent().after(content);
+      panel = $(this).parent().parent().parent().find('.panel-info').first();
+      panel.find('a.remove_department').on('click', function() {
+        window.delete_one_department($(this));
+        return false;
+      });
+      return false;
+    });
+  };
+
+  department_ready = function() {
+    return window.add_new_department();
+  };
+
+  $(document).on('page:load', department_ready);
+
+  $(document).ready(department_ready);
+
+}).call(this);
+:ET

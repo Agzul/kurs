@@ -3,7 +3,7 @@
 
   .form-actions.bottom20
     = f.submit nil, class: 'btn btn-primary'
-    
+
   .row
     .col-md-6
       .form-group
@@ -45,13 +45,20 @@
         = f.text_field :position, class: 'form-control'
         = f.error_messages_for(:position)
 
-    .col-md-12
-      = f.fields_for :department do |d|
-        .form-group
-          %h3 Отдел:
-          = d.label :name
-          = d.text_field :name, class: 'form-control'
-          = d.error_messages_for(:name)
-          = d.label '_destroy', 'Удалить?'
-          = d.check_box '_destroy'
-          = d.error_messages_for(:_destroy)
+    .clearfix
+    = f.fields_for :department do |d|
+      .col-md-6
+        .panel-heading
+          Отдел:
+          %span.toright
+          .clearfix
+        .panel-body
+          .row
+            .col-md-6
+              .form-group
+                = d.label :name
+                = d.text_field :name, class: 'form-control'
+                = d.error_messages_for(:name)
+                = d.label '_destroy', 'Удалить?'
+                = d.check_box '_destroy'
+                = d.error_messages_for(:_destroy)

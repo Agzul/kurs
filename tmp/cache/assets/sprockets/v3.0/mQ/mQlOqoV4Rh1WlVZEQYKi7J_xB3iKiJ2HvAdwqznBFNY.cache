@@ -1,0 +1,46 @@
+I".(function() {
+  var department_ready;
+
+  this.delete_one_department = function(link) {
+    if (confirm("Вы уверены?")) {
+      link.parent().find("input[type=hidden].remove_fields").first().val("1");
+      return link.parent().parent().parent().parent().hide();
+    }
+  };
+
+  this.del_all_departments = function() {
+    $('a.remove_department').on('click', function() {
+      window.delete_one_department($(this));
+      return false;
+    });
+    return false;
+  };
+
+  this.add_new_department = function() {
+    return $('#add_department_link').on('click', function() {
+      var content, new_id, panel, regexp;
+      new_id = new Date().getTime();
+      regexp = new RegExp("new_department", "g");
+      content = $(this).attr('data-content');
+      content = content.replace(regexp, new_id);
+      $(this).parent().parent().after(content);
+      panel = $(this).parent().parent().parent().find('.panel-info').first();
+      panel.find('a.remove_department').on('click', function() {
+        window.delete_one_department($(this));
+        return false;
+      });
+      return false;
+    });
+  };
+
+  department_ready = function() {
+    window.add_new_department();
+    return window.del_all_departments();
+  };
+
+  $(document).on('page:load', department_ready);
+
+  $(document).ready(department_ready);
+
+}).call(this);
+:ET

@@ -49361,3 +49361,1805 @@ Processing by ProjectsController#new as HTML
   Rendered application/_flash_messages.html.haml (0.1ms)
   [1m[36mSQL (9.5ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-04 17:38:32.490145' WHERE "users"."id" = $1[0m  [["id", 1]]
 Completed 200 OK in 152ms (Views: 134.2ms | ActiveRecord: 11.5ms)
+  [1m[36m (67.5ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (67.9ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVersions (20151203152020)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (124.7ms)[0m  [1mCREATE TABLE "versions" ("id" serial primary key, "item_type" character varying NOT NULL, "item_id" integer NOT NULL, "event" character varying NOT NULL, "whodunnit" character varying, "object" text, "created_at" timestamp) [0m
+  [1m[35m (40.2ms)[0m  CREATE  INDEX  "index_versions_on_item_type_and_item_id" ON "versions"  ("item_type", "item_id")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151203152020"]]
+  [1m[35m (19.7ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20151203154714)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (117.2ms)[0m  CREATE TABLE "delayed_jobs" ("id" serial primary key, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" timestamp, "locked_at" timestamp, "failed_at" timestamp, "locked_by" character varying, "queue" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (61.5ms)[0m  [1mCREATE  INDEX  "delayed_jobs_priority" ON "delayed_jobs"  ("priority", "run_at")[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151203154714"]]
+  [1m[36m (19.0ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryCore (20151204090515)
+  [1m[35m (0.5ms)[0m  BEGIN
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/oag2/Ruby on Rails/kurs-master/db/migrate/20151204090515_sorcery_core.rb:8)
+  [1m[36m (107.5ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "email" character varying NOT NULL, "crypted_password" character varying, "salt" character varying, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (72.9ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090515"]]
+  [1m[35m (19.0ms)[0m  COMMIT
+Migrating to SorceryRememberMe (20151204090516)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "users" ADD "remember_me_token" character varying
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "remember_me_token_expires_at" timestamp[0m
+  [1m[35m (35.9ms)[0m  CREATE  INDEX  "index_users_on_remember_me_token" ON "users"  ("remember_me_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090516"]]
+  [1m[35m (17.7ms)[0m  COMMIT
+Migrating to SorceryResetPassword (20151204090517)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD "reset_password_token" character varying
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "reset_password_token_expires_at" timestamp[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD "reset_password_email_sent_at" timestamp
+  [1m[36m (47.4ms)[0m  [1mCREATE  INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090517"]]
+  [1m[36m (17.7ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryUserActivation (20151204090518)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "users" ADD "activation_state" character varying[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD "activation_token" character varying
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "activation_token_expires_at" timestamp[0m
+  [1m[35m (48.2ms)[0m  CREATE  INDEX  "index_users_on_activation_token" ON "users"  ("activation_token")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20151204090518"]]
+  [1m[35m (16.4ms)[0m  COMMIT
+Migrating to SorceryBruteForceProtection (20151204090519)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (313.2ms)[0m  ALTER TABLE "users" ADD "failed_logins_count" integer DEFAULT 0
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "lock_expires_at" timestamp[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "users" ADD "unlock_token" character varying
+  [1m[36m (66.1ms)[0m  [1mCREATE  INDEX  "index_users_on_unlock_token" ON "users"  ("unlock_token")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090519"]]
+  [1m[36m (7.7ms)[0m  [1mCOMMIT[0m
+Migrating to SorceryActivityLogging (20151204090520)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "last_login_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "last_logout_at" timestamp
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "last_activity_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "last_login_from_ip_address" character varying
+  [1m[36m (50.0ms)[0m  [1mCREATE  INDEX  "index_users_on_last_logout_at_and_last_activity_at" ON "users"  ("last_logout_at", "last_activity_at")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20151204090520"]]
+  [1m[36m (24.9ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoles (20170409204945)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (102.7ms)[0m  [1mCREATE TABLE "roles" ("id" serial primary key, "name" character varying NOT NULL, "info" character varying NOT NULL, "full_info" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (63.0ms)[0m  CREATE UNIQUE INDEX  "index_roles_on_name" ON "roles"  ("name")
+  [1m[36m (41.0ms)[0m  [1mCREATE UNIQUE INDEX  "index_roles_on_info" ON "roles"  ("info")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409204945"]]
+  [1m[36m (23.9ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoleUsers (20170409205031)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (91.9ms)[0m  [1mCREATE TABLE "role_users" ("id" serial primary key, "role_id" integer NOT NULL, "user_id" integer NOT NULL, "data" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (62.9ms)[0m  CREATE  INDEX  "index_role_users_on_role_id" ON "role_users"  ("role_id")
+  [1m[36m (30.3ms)[0m  [1mCREATE  INDEX  "index_role_users_on_user_id" ON "role_users"  ("user_id")[0m
+  [1m[35m (3.7ms)[0m  ALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d517f3214f"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+
+  [1m[36m (2.9ms)[0m  [1mALTER TABLE "role_users" ADD CONSTRAINT "fk_rails_d225876829"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170409205031"]]
+  [1m[36m (15.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddBirthdayToUser (20170501085108)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "birthday" date[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20170501085108"]]
+  [1m[36m (5.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDepartments (20170519175107)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (113.5ms)[0m  [1mCREATE TABLE "departments" ("id" serial primary key, "name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (48.7ms)[0m  CREATE UNIQUE INDEX  "index_departments_on_name" ON "departments"  ("name")
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20170519175107"]]
+  [1m[35m (19.4ms)[0m  COMMIT
+Migrating to CreateWorkers (20170519175219)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (107.2ms)[0m  CREATE TABLE "workers" ("id" serial primary key, "sn" character varying NOT NULL, "fn" character varying NOT NULL, "ln" character varying NOT NULL, "passport" character varying NOT NULL, "inn" character varying NOT NULL, "birthday" date NOT NULL, "position" character varying NOT NULL, "department_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (62.3ms)[0m  [1mCREATE UNIQUE INDEX  "index_workers_on_passport" ON "workers"  ("passport")[0m
+  [1m[35m (51.6ms)[0m  CREATE UNIQUE INDEX  "index_workers_on_inn" ON "workers"  ("inn")
+  [1m[36m (51.7ms)[0m  [1mCREATE  INDEX  "index_workers_on_department_id" ON "workers"  ("department_id")[0m
+  [1m[35m (2.9ms)[0m  ALTER TABLE "workers" ADD CONSTRAINT "fk_rails_a707a1612d"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20170519175219"]]
+  [1m[35m (13.0ms)[0m  COMMIT
+Migrating to CreateProjects (20170519175231)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (119.9ms)[0m  CREATE TABLE "projects" ("id" serial primary key, "name" character varying NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "price" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20170519175231"]]
+  [1m[35m (16.5ms)[0m  COMMIT
+Migrating to CreateWorkerProjects (20170524130639)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (55.6ms)[0m  CREATE TABLE "worker_projects" ("id" serial primary key, "worker_id" integer NOT NULL, "project_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (40.3ms)[0m  [1mCREATE  INDEX  "index_worker_projects_on_worker_id" ON "worker_projects"  ("worker_id")[0m
+  [1m[35m (40.0ms)[0m  CREATE  INDEX  "index_worker_projects_on_project_id" ON "worker_projects"  ("project_id")
+  [1m[36m (2.2ms)[0m  [1mALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_7c9f8f33e0"
+FOREIGN KEY ("worker_id")
+  REFERENCES "workers" ("id")
+[0m
+  [1m[35m (2.4ms)[0m  ALTER TABLE "worker_projects" ADD CONSTRAINT "fk_rails_c5fb282d59"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20170524130639"]]
+  [1m[35m (20.3ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (4.5ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'delayed_jobs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'departments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.7ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'role_users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.7ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.8ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (4.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'versions'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (4.4ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'worker_projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.7ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'workers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mUser Load (0.8ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1  [["email", "admin@localhost"]]
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@localhost') LIMIT 1
+  [1m[36mSQL (1.4ms)[0m  [1mINSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["email", "admin@localhost"], ["salt", "HyPpFcvESuAjnZQ-w4zz"], ["crypted_password", "$2a$10$KKxBAQDbTfxNipDM3aRhP.IHfhl5.ef8cV4VXgOIu21jtWskNYH6."], ["created_at", "2017-06-26 16:14:42.419863"], ["updated_at", "2017-06-26 16:14:42.419863"], ["activation_token", "SyLNGLz48-d97FZR9QDs"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (8.6ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (3.7ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 314.2ms
+
+Sent mail to admin@localhost (14.2ms)
+Date: Mon, 26 Jun 2017 19:14:42 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <595132f2b6ad9_e242b1c90249960885fe@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_595132f2b41f8_e242b1c90249960884f1";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_595132f2b41f8_e242b1c90249960884f1
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/SyLNGLz48-d97FZR9QDs/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_595132f2b41f8_e242b1c90249960884f1
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+admin@localhost
+You have successfully signed up to example.com,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/SyLNGLz48-d97FZR9QDs/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_595132f2b41f8_e242b1c90249960884f1--
+
+  [1m[35m (8.9ms)[0m  COMMIT
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (3.3ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (3.0ms)
+
+UserMailer#activation_success_email: processed outbound mail in 22.5ms
+
+Sent mail to admin@localhost (6.4ms)
+Date: Mon, 26 Jun 2017 19:14:42 +0300
+From: from@example.com
+To: admin@localhost
+Message-ID: <595132f2c14b2_e242b1c902499608873c@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_595132f2c046a_e242b1c902499608865c";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_595132f2c046a_e242b1c902499608865c
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_595132f2c046a_e242b1c902499608865c
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+admin@localhost
+You have successfully activated your example.com account,
+your username is:
+admin@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_595132f2c046a_e242b1c902499608865c--
+
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  UPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-06-26 16:14:42.798117"], ["id", 1]]
+  [1m[36m (7.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1  [["email", "user@localhost"]]
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('user@localhost') LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("email", "salt", "crypted_password", "created_at", "updated_at", "activation_token", "activation_state") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["email", "user@localhost"], ["salt", "c2_DWJy9fb9fRzsaiMF4"], ["crypted_password", "$2a$10$pclawz/BTMSOJrhcj9NQyu657AbzHPW9z.3Kp41k.a7vSgdCgiEke"], ["created_at", "2017-06-26 16:14:43.022820"], ["updated_at", "2017-06-26 16:14:43.022820"], ["activation_token", "xucYB32EM4byHrJQqsBz"], ["activation_state", "pending"]]
+  Rendered user_mailer/activation_needed_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_needed_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_needed_email: processed outbound mail in 13.1ms
+
+Sent mail to user@localhost (6.4ms)
+Date: Mon, 26 Jun 2017 19:14:43 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <595132f39d4a_e242b1c902499608896f@oag2-Lenovo-G505s.mail>
+Subject: Welcome to My Awesome Site
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_595132f38a07_e242b1c9024996088829";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_595132f38a07_e242b1c9024996088829
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/xucYB32EM4byHrJQqsBz/activate.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_595132f38a07_e242b1c9024996088829
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Welcome to example.com,
+user@localhost
+You have successfully signed up to example.com,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+http://localhost:3000/users/xucYB32EM4byHrJQqsBz/activate.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_595132f38a07_e242b1c9024996088829--
+
+  [1m[35m (8.4ms)[0m  COMMIT
+DEPRECATION WARNING: The method `login_path` cannot be used here as a full URL is required. Use `login_url` instead. (called from activation_success_email at /home/oag2/Ruby on Rails/kurs-master/app/mailers/user_mailer.rb:11)
+  Rendered user_mailer/activation_success_email.html.haml within layouts/mailer (0.2ms)
+  Rendered user_mailer/activation_success_email.text.haml within layouts/mailer (0.1ms)
+
+UserMailer#activation_success_email: processed outbound mail in 14.8ms
+
+Sent mail to user@localhost (7.6ms)
+Date: Mon, 26 Jun 2017 19:14:43 +0300
+From: from@example.com
+To: user@localhost
+Message-ID: <595132f311c34_e242b1c90249960891a8@oag2-Lenovo-G505s.mail>
+Subject: Your account is now activated
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_595132f3106d6_e242b1c9024996089096";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_595132f3106d6_e242b1c9024996089096
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+
+----==_mimepart_595132f3106d6_e242b1c9024996089096
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<hmtl>
+<body>
+Congratz,
+user@localhost
+You have successfully activated your example.com account,
+your username is:
+user@localhost.
+To login to the site, just follow this link:
+/login.
+Thanks for joining and have a great day!
+
+</body>
+</hmtl>
+
+----==_mimepart_595132f3106d6_e242b1c9024996089096--
+
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  UPDATE "users" SET "activation_token" = $1, "activation_state" = $2, "updated_at" = $3 WHERE "users"."id" = $4  [["activation_token", nil], ["activation_state", "active"], ["updated_at", "2017-06-26 16:14:43.079182"], ["id", 2]]
+  [1m[36m (6.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mRole Load (0.7ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"]]
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mRole Exists (0.5ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'admin' LIMIT 1
+  [1m[36mRole Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Администратор' LIMIT 1[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "admin"], ["info", "Администратор"], ["full_info", "Администратор системы"], ["created_at", "2017-06-26 16:14:43.110486"], ["updated_at", "2017-06-26 16:14:43.110486"]]
+  [1m[36m (7.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mRole Load (0.7ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = $1 AND "roles"."info" = $2 AND "roles"."full_info" = $3 LIMIT 1  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"]]
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mRole Exists (0.7ms)[0m  SELECT  1 AS one FROM "roles" WHERE "roles"."name" = 'operator' LIMIT 1
+  [1m[36mRole Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "roles" WHERE "roles"."info" = 'Оператор' LIMIT 1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "roles" ("name", "info", "full_info", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "operator"], ["info", "Оператор"], ["full_info", "Оператор"], ["created_at", "2017-06-26 16:14:43.128877"], ["updated_at", "2017-06-26 16:14:43.128877"]]
+  [1m[36m (12.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["role_id", 1], ["user_id", 1], ["created_at", "2017-06-26 16:14:43.169097"], ["updated_at", "2017-06-26 16:14:43.169097"]]
+  [1m[35m (4.9ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "role_users" ("role_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["role_id", 2], ["user_id", 2], ["created_at", "2017-06-26 16:14:43.179637"], ["updated_at", "2017-06-26 16:14:43.179637"]]
+  [1m[36m (5.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mDepartment Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "departments" WHERE "departments"."name" = 'DepartmentName' LIMIT 1[0m
+  [1m[35mSQL (1.2ms)[0m  INSERT INTO "departments" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "DepartmentName"], ["created_at", "2017-06-26 16:14:43.214148"], ["updated_at", "2017-06-26 16:14:43.214148"]]
+  [1m[36m (25.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mDepartment Exists (1.0ms)[0m  [1mSELECT  1 AS one FROM "departments" WHERE ("departments"."name" = 'DepartmentName' AND "departments"."id" != 1) LIMIT 1[0m
+  [1m[35mWorker Exists (0.9ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456789' LIMIT 1
+  [1m[36mWorker Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678901' LIMIT 1[0m
+  [1m[35mSQL (1.6ms)[0m  INSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"  [["fn", "Pavel"], ["sn", "Suvorov"], ["ln", "Andreevich"], ["passport", "0123456789"], ["inn", "012345678901"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-06-26 16:14:43.285860"], ["updated_at", "2017-06-26 16:14:43.285860"]]
+  [1m[36m (19.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mDepartment Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "departments" WHERE ("departments"."name" = 'DepartmentName' AND "departments"."id" != 1) LIMIT 1[0m
+  [1m[35mWorker Exists (0.8ms)[0m  SELECT  1 AS one FROM "workers" WHERE "workers"."passport" = '0123456780' LIMIT 1
+  [1m[36mWorker Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "workers" WHERE "workers"."inn" = '012345678902' LIMIT 1[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "workers" ("fn", "sn", "ln", "passport", "inn", "birthday", "position", "department_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"  [["fn", "Oleg"], ["sn", "Morozov"], ["ln", "Nikolaevich"], ["passport", "0123456780"], ["inn", "012345678902"], ["birthday", "1996-04-07"], ["position", "position"], ["department_id", 1], ["created_at", "2017-06-26 16:14:43.318103"], ["updated_at", "2017-06-26 16:14:43.318103"]]
+  [1m[36m (10.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 1000], ["created_at", "2017-06-26 16:14:43.360773"], ["updated_at", "2017-06-26 16:14:43.360773"]]
+  [1m[35m (23.1ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "projects" ("name", "start", "end", "price", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["name", "ProjectName"], ["start", "2017-04-07"], ["end", "2017-05-07"], ["price", 2000], ["created_at", "2017-06-26 16:14:43.389701"], ["updated_at", "2017-06-26 16:14:43.389701"]]
+  [1m[36m (5.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (1.9ms)[0m  [1mINSERT INTO "worker_projects" ("worker_id", "project_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["worker_id", 1], ["project_id", 1], ["created_at", "2017-06-26 16:14:43.418114"], ["updated_at", "2017-06-26 16:14:43.418114"]]
+  [1m[35m (9.3ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "worker_projects" ("worker_id", "project_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["worker_id", 1], ["project_id", 2], ["created_at", "2017-06-26 16:14:43.433898"], ["updated_at", "2017-06-26 16:14:43.433898"]]
+  [1m[36m (6.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (1.1ms)[0m  [1mINSERT INTO "worker_projects" ("worker_id", "project_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["worker_id", 2], ["project_id", 1], ["created_at", "2017-06-26 16:14:43.445036"], ["updated_at", "2017-06-26 16:14:43.445036"]]
+  [1m[35m (6.0ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "worker_projects" ("worker_id", "project_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["worker_id", 2], ["project_id", 2], ["created_at", "2017-06-26 16:14:43.455850"], ["updated_at", "2017-06-26 16:14:43.455850"]]
+  [1m[36m (6.6ms)[0m  [1mCOMMIT[0m
+
+
+Started GET "/racers" for 127.0.0.1 at 2017-06-26 19:14:53 +0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+ActionController::RoutingError (No route matches [GET] "/racers"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.3.0) lib/web_console/middleware.rb:28:in `block in call'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `catch'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  request_store (1.3.2) lib/request_store/middleware.rb:9:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.8) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.8) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.8) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.8) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.8) lib/rack/content_length.rb:15:in `call'
+  puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+  puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+  puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+  puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+  puma (3.8.2) lib/puma/thread_pool.rb:120:in `call'
+  puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+
+
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.9ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/routes/_route.html.erb (6.4ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/routes/_table.html.erb (18.8ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (15.4ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (121.8ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.8ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (718.4ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /home/oag2/.rvm/gems/ruby-2.2.4/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (779.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-06-26 19:15:01 +0300
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.haml within layouts/application (10.3ms)
+  Rendered application/_navbar_top.html.haml (16.3ms)
+  Rendered application/_my_submenu.html.haml (5.7ms)
+  Rendered application/_sidebar.html.haml (28.4ms)
+  Rendered application/_flash_messages.html.haml (5.6ms)
+  [1m[35mUser Load (1.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mSQL (22.2ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:15:03.167007' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 1496ms (Views: 1387.0ms | ActiveRecord: 30.3ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:15:05 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.5ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.5ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (6.9ms)
+  [1m[35mWorker Load (0.9ms)[0m  SELECT "workers".* FROM "workers"
+  [1m[36mDepartment Load (0.4ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (89.6ms)
+  Rendered application/_navbar_top.html.haml (10.7ms)
+  Rendered application/_my_submenu.html.haml (4.1ms)
+  Rendered application/_sidebar.html.haml (16.4ms)
+  Rendered application/_flash_messages.html.haml (4.1ms)
+  [1m[36mSQL (16.9ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:15:05.912681' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 394ms (Views: 273.8ms | ActiveRecord: 26.9ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2017-06-26 19:15:07 +0300
+Processing by ProjectsController#index as HTML
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.4ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.3ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[35mProject Load (0.6ms)[0m  SELECT "projects".* FROM "projects"
+  [1m[36mWorkerProject Load (0.5ms)[0m  [1mSELECT "worker_projects".* FROM "worker_projects" WHERE "worker_projects"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[35mWorker Load (0.3ms)[0m  SELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mWorker Load (0.4ms)[0m  [1mSELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  [1m[35mWorkerProject Load (0.4ms)[0m  SELECT "worker_projects".* FROM "worker_projects" WHERE "worker_projects"."project_id" = $1  [["project_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1  [["id", 2]]
+  Rendered projects/index.html.haml within layouts/application (47.1ms)
+  Rendered application/_navbar_top.html.haml (2.1ms)
+  Rendered application/_my_submenu.html.haml (0.1ms)
+  Rendered application/_sidebar.html.haml (4.1ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[36mSQL (20.0ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:15:08.039644' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 184ms (Views: 142.5ms | ActiveRecord: 27.2ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:15:14 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.3ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.3ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[35mWorker Load (0.5ms)[0m  SELECT "workers".* FROM "workers"
+  [1m[36mDepartment Load (0.4ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (8.9ms)
+  Rendered application/_navbar_top.html.haml (2.2ms)
+  Rendered application/_my_submenu.html.haml (0.1ms)
+  Rendered application/_sidebar.html.haml (4.0ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[36mSQL (9.4ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:15:14.374091' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 119ms (Views: 99.3ms | ActiveRecord: 11.8ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:19:18 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.4ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.4ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (3.8ms)
+  [1m[35mWorker Load (0.5ms)[0m  SELECT "workers".* FROM "workers"
+  [1m[36mDepartment Load (0.4ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (46.9ms)
+  Rendered application/_navbar_top.html.haml (2.2ms)
+  Rendered application/_my_submenu.html.haml (0.1ms)
+  Rendered application/_sidebar.html.haml (7.4ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[36mSQL (24.4ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:19:19.053248' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 265ms (Views: 139.4ms | ActiveRecord: 37.7ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:19:19 +0300
+
+
+Started GET "/workers/new" for 127.0.0.1 at 2017-06-26 19:19:24 +0300
+Processing by WorkersController#new as HTML
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.4ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.4ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.3ms)
+  Rendered application/_error_messages_for.html.haml (9.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (6.9ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered workers/_form.html.haml (122.4ms)
+  Rendered workers/new.html.haml within layouts/application (147.6ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_my_submenu.html.haml (0.1ms)
+  Rendered application/_sidebar.html.haml (6.3ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (18.5ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:19:24.927436' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 290ms (Views: 259.8ms | ActiveRecord: 20.3ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:19:27 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.5ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (1.2ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.5ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.4ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (9.1ms)
+  Rendered application/_navbar_top.html.haml (2.1ms)
+  Rendered application/_my_submenu.html.haml (0.2ms)
+  Rendered application/_sidebar.html.haml (10.6ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (30.3ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:19:27.390107' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 180ms (Views: 134.7ms | ActiveRecord: 34.0ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.2ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.3ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.4ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (8.9ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_sidebar.html.haml (13.7ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (31.8ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:20:26.709674' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 154ms (Views: 112.4ms | ActiveRecord: 33.9ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:26 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:20:27 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.6ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.4ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (33.7ms)
+  Rendered application/_navbar_top.html.haml (2.1ms)
+  Rendered application/_sidebar.html.haml (6.6ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[35mSQL (31.4ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:20:48.443688' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 276ms (Views: 125.4ms | ActiveRecord: 46.9ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:20:48 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.2ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.1ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.2ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (28.0ms)
+  Rendered application/_navbar_top.html.haml (1.9ms)
+  Rendered application/_sidebar.html.haml (6.3ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (24.4ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:30:11.676708' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 221ms (Views: 110.8ms | ActiveRecord: 35.9ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:11 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:30:12 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:30:18 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.4ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.5ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.3ms)
+  [1m[36mWorker Load (0.8ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.6ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (37.9ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_sidebar.html.haml (6.3ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (22.5ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:30:19.034034' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 259ms (Views: 135.7ms | ActiveRecord: 40.1ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:30:19 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+Processing by WorkersController#index as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :require_login rendered or redirected
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+Processing by WelcomeController#new as HTML
+  Rendered welcome/_form.html.haml (12.3ms)
+  Rendered welcome/new.html.haml within layouts/application (18.6ms)
+  Rendered application/_navbar_top.html.haml (1.8ms)
+  Rendered application/_sidebar.html.haml (6.7ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+Completed 200 OK in 190ms (Views: 147.3ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:39 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:40 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:51:40 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:51:40 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:51:40 +0300
+
+
+Started POST "/try_login" for 127.0.0.1 at 2017-06-26 19:51:48 +0300
+Processing by WelcomeController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"1cd7qjk7hHDCc5UtsQl0Tc5YNurb4gPPDJOGeZdyFuOy/MuZ602fUPHMDBkeOEmLvG+NpDJp/T3HXhPFqUUP2A==", "email"=>"admin@localhost", "password"=>"[FILTERED]", "remember_me"=>"false", "commit"=>"Войти"}
+  [1m[36mUser Load (2.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = 'admin@localhost'  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mSQL (28.9ms)[0m  UPDATE "users" SET "failed_logins_count" = 0 WHERE "users"."id" = $1  [["id", 1]]
+  [1m[36mSQL (27.2ms)[0m  [1mUPDATE "users" SET "last_login_at" = '2017-06-26 16:51:48.558474' WHERE "users"."id" = $1[0m  [["id", 1]]
+  [1m[35mSQL (9.7ms)[0m  UPDATE "users" SET "last_login_from_ip_address" = '127.0.0.1' WHERE "users"."id" = $1  [["id", 1]]
+Redirected to http://localhost:3000/workers
+  [1m[36mSQL (8.6ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:51:48.599097' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 302 Found in 292ms (ActiveRecord: 76.5ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:51:48 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.6ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."user_id" = $1  ORDER BY "role_users"."id" ASC LIMIT 1[0m  [["user_id", 1]]
+  [1m[35mRole Load (0.5ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.4ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (32.4ms)
+  Rendered application/_navbar_top.html.haml (2.5ms)
+  Rendered application/_sidebar.html.haml (5.3ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[35mSQL (25.1ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:51:48.815750' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 215ms (Views: 133.2ms | ActiveRecord: 36.1ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.4ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.2ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (29.6ms)
+  Rendered application/_navbar_top.html.haml (2.1ms)
+  Rendered application/_sidebar.html.haml (6.2ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (32.3ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:54:24.582321' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 243ms (Views: 120.1ms | ActiveRecord: 47.1ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:24 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:25 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:25 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:25 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:54:25 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:54:25 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.2ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.2ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (29.0ms)
+  Rendered application/_navbar_top.html.haml (1.9ms)
+  Rendered application/_sidebar.html.haml (6.3ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[35mSQL (27.6ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:54:39.320047' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 228ms (Views: 115.8ms | ActiveRecord: 38.2ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:54:39 +0300
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.3ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.3ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (27.5ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_sidebar.html.haml (6.5ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[35mSQL (93.6ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 16:54:47.452858' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 290ms (Views: 111.7ms | ActiveRecord: 104.5ms)
+
+
+Started GET "/assets/theme.self-0cd9e74e3a79bd5b0d451bb2350d4c9286ae974f62349a7914a2c79ffec82064.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-79d1c2e6e8b0d90803cfd9ad1a8bec31d6cde65b41438ec892929ce07f368ac2.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/application.self-d885a0a66bd595c10edb24f8879f94e334d88be0730c4d7c7a7b57c731c09037.css?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/jquery.maskedinput.self-4e0cf4cd8f2c531aed9d38ff9537af1065f92408fb369be61ab0c82b40000ca8.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/bootstrap.self-b38817c3e3a3049abb1fc08dd6ae448b23330f8453226efdb074710209474f75.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/bootstrap-growl.min.self-8a40746a094cfdde4b396d4e88457397b744d7042d3cd8f7dd0aaa9c1814a4c5.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/moment.self-c99e0f02d41c61d0fd120e8fde6f9277b7ade69ecdac6c27872f5e631fb6cf38.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/bootstrap-datetimepicker.self-f7eed811e1c58d1cdbc448230279684b07653dcf7d067a676dfa60ad370f8407.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/moment/ru.self-58fad0e6c5e51bdf3f357ccc5e991e7c729463209b9aaaa3cdd88a7cc4d40396.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/departments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/growl_messages.self-398f787b13e0f4b46ee38392cc4606d6883a92b8f79cd19a9e3c5c4f358cfb0d.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/main.self-3f11260e5064c0e46b8f7eb25e0ff43eb318d677a5628550408e4bffea4df7fc.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/password_resets.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/projects.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/role_users.self-1878dd443f16e8cfe65a1150cdfbb48d9d1fde90d019b6ad8407f7db197b2934.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/roles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/sidebar.self-9de08734b770e1d724d9ec0f5cc40ed784c495e1f328ac6ad09b33b4ed037919.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/welcome.self-62fe1ba3a628b58f4fd05bd5c07745afba414a81bf6bcf6667b043c255efe449.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/worker_projects.self-64e4ab1efc42b51e4b447146a70b69d70fa253e5b9785151b18af646576a1d7f.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/application.self-16c207b3ca1b52afcfc7f4b662487caf1bbe084a6656bb15f693ab9de2d11be7.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/workers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/logo-6f1545a4a342de939e2a3a77e7f704975b28d8157a9e4d45050a667eca64a54b.png" for 127.0.0.1 at 2017-06-26 19:54:47 +0300
+
+
+Started GET "/assets/gears-c73a2796db66a2ae730c595dc9cddfbbbd319737e0eaa442bf5318c6d538e167.gif" for 127.0.0.1 at 2017-06-26 19:54:48 +0300
+
+
+Started GET "/workers/new" for 127.0.0.1 at 2017-06-26 19:55:00 +0300
+Processing by WorkersController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.5ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.6ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  Rendered application/_error_messages_for.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.0ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.0ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered workers/_form.html.haml (33.9ms)
+  Rendered workers/new.html.haml within layouts/application (36.9ms)
+  Rendered application/_navbar_top.html.haml (1.9ms)
+  Rendered application/_sidebar.html.haml (14.0ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[36mSQL (31.9ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:55:00.749700' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 180ms (Views: 138.3ms | ActiveRecord: 33.6ms)
+
+
+Started GET "/projects/new" for 127.0.0.1 at 2017-06-26 19:55:05 +0300
+Processing by ProjectsController#new as HTML
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.2ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.2ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  Rendered application/_error_messages_for.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  [1m[35m (0.8ms)[0m  SELECT sn, id FROM "workers"
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered projects/_one_worker_project_form.html.haml (40.2ms)
+  Rendered projects/_form.html.haml (104.3ms)
+  Rendered projects/new.html.haml within layouts/application (134.3ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_sidebar.html.haml (20.2ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[36mSQL (29.4ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:55:06.210312' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 324ms (Views: 269.4ms | ActiveRecord: 35.9ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 19:56:03 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.2ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.3ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[35mWorker Load (0.8ms)[0m  SELECT "workers".* FROM "workers"
+  [1m[36mDepartment Load (0.6ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.1ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (11.9ms)
+  Rendered application/_navbar_top.html.haml (2.9ms)
+  Rendered application/_sidebar.html.haml (5.3ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[36mSQL (29.7ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 16:56:03.522109' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 162ms (Views: 121.3ms | ActiveRecord: 32.4ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 20:01:01 +0300
+Processing by WorkersController#index as HTML
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.4ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.3ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[35mWorker Load (0.5ms)[0m  SELECT "workers".* FROM "workers"
+  [1m[36mDepartment Load (0.3ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.1ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (9.2ms)
+  Rendered application/_navbar_top.html.haml (1.9ms)
+  Rendered application/_sidebar.html.haml (5.0ms)
+  Rendered application/_flash_messages.html.haml (0.3ms)
+  [1m[36mSQL (28.4ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:01.347279' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 155ms (Views: 116.6ms | ActiveRecord: 30.9ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2017-06-26 20:01:04 +0300
+Processing by ProjectsController#index as HTML
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.2ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.2ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[35mProject Load (0.4ms)[0m  SELECT "projects".* FROM "projects"
+  [1m[36mWorkerProject Load (0.5ms)[0m  [1mSELECT "worker_projects".* FROM "worker_projects" WHERE "worker_projects"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[35mWorker Load (0.7ms)[0m  SELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mWorker Load (0.5ms)[0m  [1mSELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  [1m[35mWorkerProject Load (0.6ms)[0m  SELECT "worker_projects".* FROM "worker_projects" WHERE "worker_projects"."project_id" = $1  [["project_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1  [["id", 2]]
+  Rendered projects/index.html.haml within layouts/application (16.5ms)
+  Rendered application/_navbar_top.html.haml (4.1ms)
+  Rendered application/_sidebar.html.haml (4.8ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[36mSQL (11.1ms)[0m  [1mUPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:04.902867' WHERE "users"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 138ms (Views: 116.0ms | ActiveRecord: 14.9ms)
+
+
+Started GET "/projects/1" for 127.0.0.1 at 2017-06-26 20:01:26 +0300
+Processing by ProjectsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Load (0.2ms)[0m  [1mSELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1  [["user_id", 1], ["id", 1]]
+  [1m[36mRole Load (0.2ms)[0m  [1mSELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mProject Load (0.3ms)[0m  SELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mWorkerProject Load (0.4ms)[0m  [1mSELECT "worker_projects".* FROM "worker_projects" WHERE "worker_projects"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[35mWorker Load (0.4ms)[0m  SELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mWorker Load (0.4ms)[0m  [1mSELECT  "workers".* FROM "workers" WHERE "workers"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  Rendered projects/show.html.haml within layouts/application (11.7ms)
+  Rendered application/_navbar_top.html.haml (1.9ms)
+  Rendered application/_sidebar.html.haml (5.1ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (15.7ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:26.920364' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 152ms (Views: 125.8ms | ActiveRecord: 18.3ms)
+
+
+Started GET "/welcome/index" for 127.0.0.1 at 2017-06-26 20:01:29 +0300
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.haml within layouts/application (3.7ms)
+  Rendered application/_navbar_top.html.haml (3.5ms)
+  Rendered application/_sidebar.html.haml (7.6ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[36mUser Load (0.6ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mSQL (8.3ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:29.279889' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 124ms (Views: 110.8ms | ActiveRecord: 8.9ms)
+
+
+Started GET "/welcome/index" for 127.0.0.1 at 2017-06-26 20:01:31 +0300
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.haml within layouts/application (0.1ms)
+  Rendered application/_navbar_top.html.haml (17.6ms)
+  Rendered application/_sidebar.html.haml (5.1ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mSQL (39.7ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:31.356839' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 172ms (Views: 127.1ms | ActiveRecord: 40.2ms)
+
+
+Started GET "/projects/new" for 127.0.0.1 at 2017-06-26 20:01:33 +0300
+Processing by ProjectsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.4ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  Rendered application/_error_messages_for.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered application/_error_messages_for_attr.html.haml (0.0ms)
+  [1m[36m (0.4ms)[0m  [1mSELECT sn, id FROM "workers"[0m
+  Rendered application/_error_messages_for_attr.html.haml (0.1ms)
+  Rendered projects/_one_worker_project_form.html.haml (5.3ms)
+  Rendered projects/_form.html.haml (25.2ms)
+  Rendered projects/new.html.haml within layouts/application (28.0ms)
+  Rendered application/_navbar_top.html.haml (2.0ms)
+  Rendered application/_sidebar.html.haml (5.1ms)
+  Rendered application/_flash_messages.html.haml (0.1ms)
+  [1m[35mSQL (29.5ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:33.796048' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 161ms (Views: 123.2ms | ActiveRecord: 31.2ms)
+
+
+Started GET "/workers" for 127.0.0.1 at 2017-06-26 20:01:48 +0300
+Processing by WorkersController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mRoleUser Load (0.4ms)[0m  SELECT  "role_users".* FROM "role_users" WHERE "role_users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mRoleUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "role_users" WHERE "role_users"."user_id" = $1 AND "role_users"."id" = $2 LIMIT 1[0m  [["user_id", 1], ["id", 1]]
+  [1m[35mRole Load (0.5ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered application/_breadcrumb.html.haml (0.2ms)
+  [1m[36mWorker Load (0.6ms)[0m  [1mSELECT "workers".* FROM "workers"[0m
+  [1m[35mDepartment Load (0.5ms)[0m  SELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "departments".* FROM "departments" WHERE "departments"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  Rendered workers/index.html.haml within layouts/application (8.6ms)
+  Rendered application/_navbar_top.html.haml (2.3ms)
+  Rendered application/_sidebar.html.haml (7.0ms)
+  Rendered application/_flash_messages.html.haml (0.2ms)
+  [1m[35mSQL (18.8ms)[0m  UPDATE "users" SET "last_activity_at" = '2017-06-26 17:01:48.950425' WHERE "users"."id" = $1  [["id", 1]]
+Completed 200 OK in 145ms (Views: 117.4ms | ActiveRecord: 21.5ms)

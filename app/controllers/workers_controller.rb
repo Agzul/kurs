@@ -1,5 +1,8 @@
 class WorkersController < ApplicationController
-  before_action :set_worker, only: [:show, :edit, :update, :destroy]
+  before_action :set_worker,           only: [:show, :edit, :update, :destroy]
+  before_action :deny_access_no_role,  only: [:edit, :update, :destroy]
+  before_action :deny_access_operator, only: [:destroy]
+  skip_before_action :check_app_auth
 
   # GET /workers
   # GET /workers.json
@@ -66,6 +69,24 @@ class WorkersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_worker
       @worker = Worker.find(params[:id])
+    end
+
+    def deny_access_no_role
+      if user_priority == 0
+        redirect_to workers_path()
+        flash[:danger] = 'Недостаточно прав'
+      else
+        @worker = Worker.find(params[:id])
+      end
+    end
+
+    def deny_access_operator
+      if user_priority == 2
+        @worker = Worker.find(params[:id])
+      else
+        redirect_to workers_path()
+        flash[:danger] = 'Недостаточно прав'
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

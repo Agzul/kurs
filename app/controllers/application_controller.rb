@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :require_login
   before_action :check_app_auth
+  before_action :user_priority
 
   private
   ## Выбор текущей роли и проверка прав доступа для неё у данного пользователя
@@ -13,7 +14,7 @@ class ApplicationController < ActionController::Base
     else
       @current_user_object = current_user
       @current_user_login = @current_user_object.email
-      
+
       @current_role_user = params[:user_role_id]
       @current_role_user = session[:user_role_id] if @current_role_user.nil?
       if @current_role_user.nil?
@@ -27,7 +28,7 @@ class ApplicationController < ActionController::Base
       # Сохраняем в сессию, чтобы данная роль была выбрана и дальше
       unless @current_role_user.nil?
         session[:user_role_id] = @current_role_user.id
-      end  
+      end
       unless check_ctr_auth()
         redirect_to(ip_path(
           :bad_action_name => action_name,
@@ -45,4 +46,12 @@ class ApplicationController < ActionController::Base
   def not_authenticated
     redirect_to login_path, danger: "Сначала войдите в систему!"
   end
+
+  def user_priority()
+    return 0 if current_user.nil?
+    return 1 if current_user.role_users.first.try(:is_operator?)
+    return 2 if current_user.role_users.first.try(:is_admin?)
+    return 0
+  end
+
 end

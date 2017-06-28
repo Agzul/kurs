@@ -1,5 +1,8 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project,          only: [:show, :edit, :update, :destroy]
+  before_action :deny_access_no_role,  only: [:edit, :update, :destroy]
+  before_action :deny_access_operator, only: [:destroy]
+  skip_before_action :check_app_auth
 
   # GET /projects
   # GET /projects.json
@@ -65,6 +68,24 @@ class ProjectsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def deny_access_no_role
+      if user_priority == 0
+        redirect_to projects_path()
+        flash[:danger] = 'Недостаточно прав'
+      else
+        @project = Project.find(params[:id])
+      end
+    end
+
+    def deny_access_operator
+      if user_priority == 2
+        @project = Project.find(params[:id])
+      else
+        redirect_to projects_path()
+        flash[:danger] = 'Недостаточно прав'
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

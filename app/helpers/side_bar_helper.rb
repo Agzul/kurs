@@ -30,10 +30,13 @@ module SideBarHelper
       {:name => 'Добавление',
        :controller => :workers, :action => :new,
        :icon => 'plus'},
-      {:name => 'Редактирование',
+      {:name => 'Администрирование',
        :controller => :workers, :action => :index,
        :icon => 'cog',
-       :class => 'long'}
+       :class => 'long'},
+      {:name => 'Поиск',
+       :controller => :workers, :action => :search,
+       :icon => 'search'}
     ]}
     result << {
       :name => 'Проекты',
@@ -42,7 +45,7 @@ module SideBarHelper
       {:name => 'Добавление',
        :controller => :projects, :action => :new,
        :icon => 'plus'},
-      {:name => 'Редактирование',
+      {:name => 'Администрирование',
        :controller => :projects, :action => :index,
        :icon => 'cog',
        :class => 'long'}

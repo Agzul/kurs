@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :worker_projects
   resources :projects
-  resources :workers
+  resources :workers do
+    collection do
+      get :search
+    end
+  end
   resources :departments
   resources :role_users
   resources :roles

@@ -13,4 +13,40 @@ class Worker < ActiveRecord::Base
   validates :inn,      presence: true, uniqueness: true, length: { is: 12 }, format: { with: VALID_STRING_NUMBER }
   validates :birthday, presence: true
   validates :position, presence: true
+
+  def self.search(params)
+    result = Worker.includes(:department, :projects).references(:department, :projects)
+
+    if params['fn'].present?
+      result = result.where('workers.fn = ?', params['fn'])
+    end
+
+    if params['sn'].present?
+      result = result.where('workers.sn = ?', params['sn'])
+    end
+
+    if params['ln'].present?
+      result = result.where('workers.ln = ?', params['ln'])
+    end
+
+    if params['passport'].present?
+      result = result.where('workers.passport = ?', params['passport'])
+    end
+
+    if params['inn'].present?
+      result = result.where('workers.inn = ?', params['inn'])
+    end
+
+    if params['birthday'].present?
+      result = result.where('workers.birthday = ?', params['birthday'])
+    end
+
+    if params['position'].present?
+      result = result.where('workers.position = ?', params['position'])
+    end
+
+
+    result
+  end
+
 end

@@ -15,6 +15,16 @@ class WorkersController < ApplicationController
   def show
   end
 
+  def search
+    @departments = Department.all
+    if params.has_key?('search')
+      @workers = Worker.search(params['search'])
+    else
+      @workers = []
+    end
+    params['search'] ||= {}
+  end
+
   # GET /workers/new
   def new
     @worker = Worker.new

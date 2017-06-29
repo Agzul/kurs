@@ -1,0 +1,72 @@
+=breadcrumb_tag do
+  %li.active
+    Поиск
+  %li
+    =link_to t('headers.workers.index'), workers_path
+  %li
+    Сотрудники
+
+.page-header
+  %h1 Поиск
+
+=form_tag search_workers_path(), method: :get do
+  .row
+    .col-md-3
+      .form-group
+        %b Имя
+        =text_field_tag 'search[fn]', params['search']['fn'], class: 'form-control'
+    .col-md-3
+      .form-group
+        %b Фамилия
+        =text_field_tag 'search[sn]', params['search']['sn'], class: 'form-control'
+    .col-md-3
+      .form-group
+        %b Отчество
+        =text_field_tag 'search[ln]', params['search']['ln'], class: 'form-control'
+    .col-md-3
+      .form-group
+        %b Серия и номер пасспорта
+        =text_field_tag 'search[passport]', params['search']['passport'], class: 'form-control'
+    .col-md-3
+      .form-group
+        %b ИНН
+        =text_field_tag 'search[inn]', params['search']['inn'], class: 'form-control'
+    .col-md-3
+      .form-group
+        %b День рождения
+        .input-group.date.datepicker
+          =text_field(:birthday, class: 'form-control')
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-calendar
+    .col-md-3
+      .form-group
+        %b Должность
+        =text_field_tag 'search[position]', params['search']['position'], class: 'form-control'
+    .col-md-12
+      =submit_tag 'Поиск'
+.page-header
+  %h1 Результаты поиска
+- if @workers
+  %table.table.table-hover.table-striped.table-responsive
+    %thead
+      %tr
+        %th Фамилия
+        %th Имя
+        %th Отчество
+        %th Серия и номер паспорта
+        %th ИНН
+        %th День рождения
+        %th Должность
+        %th Отдел
+
+    %tbody
+      - @workers.each do |worker|
+        %tr.center
+          %td= worker.sn
+          %td= worker.fn
+          %td= worker.ln
+          %td= worker.passport
+          %td= worker.inn
+          %td= worker.birthday
+          %td= worker.position
+          %td= worker.department.nil? ? "" : worker.department.name
